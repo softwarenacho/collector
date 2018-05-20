@@ -2,8 +2,10 @@ const collectorApp = angular.module('collectorApp', []);
 
 collectorApp.controller('CardsController', ['$scope', '$timeout' , function CardsController($scope, $timeout) {
 
-  let localCards = JSON.parse(localStorage.groups);
-  let localCardsIds = localCards.map( c => c.card );
+  let localCards;
+  let localCardsIds;
+  if (localStorage.groups) localCards = JSON.parse(localStorage.groups);
+  if (localCards) localCardsIds = localCards.map( c => c.card );
 
   class Card {
 
@@ -54,7 +56,7 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
       for (let i = init; i <= end; i++) {
         let id = this.name == 'Coca Cola' ? `CC${i}` : i;
         let card = new Card(id);
-        if (localCardsIds.includes(id)) {
+        if (localCards && localCardsIds && localCardsIds.includes(id)) {
           let lCard = localCards[localCardsIds.indexOf(id)];
           card.owned = true;
           if (lCard.duplicates) card.duplicates = lCard.duplicates
@@ -172,6 +174,30 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
   }
   $scope.gaveDuplicate = (card) => {
     card.decrementDuplicate();
+  }
+
+  $scope.toggleTools = () => {
+    $scope.tActive = !$scope.tActive;
+  }
+
+  $scope.getOwnedCount = () => {
+    let groupCards = $scope.groups.map( g => g.groupCards() );
+    let cards = groupCards.reduce((r, a) => [...r, ...a], [] );
+    return cards.filter( c => c.owned).length;
+  }
+
+  $scope.getMissingCount = () => {
+    let groupCards = $scope.groups.map( g => g.groupCards() );
+    let cards = groupCards.reduce((r, a) => [...r, ...a], [] );
+    return 690 - cards.filter( c => c.owned).length;
+  }
+
+  $scope.getDuplicateCount = () => {
+    let groupCards = $scope.groups.map( g => g.groupCards() );
+    let cards = groupCards.reduce((r, a) => [...r, ...a], [] );
+    let duplicates = cards.filter( c => c.duplicates ).map( d => d.duplicates );
+    let reduced = duplicates.reduce( ( base, element ) => base + element );
+    return reduced;
   }
 
   function apply(){

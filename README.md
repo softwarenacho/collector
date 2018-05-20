@@ -27,6 +27,7 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
   - Modos de visualización ( minima sin paises, sólo numerados, lista con detalles)
   - Usuarios para ampliar la opciones de compartir
   - Implementar manifiesto y service workers
+  - Busqueda rápida con resultados visuales
 
 
 ### Bugs:

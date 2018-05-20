@@ -97,11 +97,68 @@
 
   </div>
 
-  <div class="save-btn flex-center">
-    <i class="fas fa-save"
-      ng-click="saveCards()"
-      ng-class="{'unsaved': !saved}" >
-    </i>
+  <div class="toolbar-container"
+       ng-class="{'active': tActive}" >
+
+    <div class="save-btn flex-center" ng-class="{'btns': tActive}">
+      <i class="fas fa-save"
+        ng-click="saveCards()"
+        ng-class="{'unsaved': !saved}" >
+      </i>
+      <span class="text-center text-muted" ng-if="tActive"style="font-size: 35%;">Guardar</span>
+    </div>
+
+    <div class="tools-btn flex-center">
+      <i class="fas fa-circle" ng-if="!tActive"></i>
+      <i class="fas fa-chevron-down" ng-if="tActive" ng-click="toggleTools()"></i>
+      <i class="fas fa-ellipsis-h"
+        ng-if="!tActive"
+        ng-click="toggleTools()"
+        ng-class="{'active': !tActive}" >
+      </i>
+    </div>
+
+    <div class="houdini-btns flex-center">
+
+      <div class="btns share flex-center text-center">
+        <i class="fa fa-info-circle text-muted"></i>
+        <span class="text-center text-muted">Ayuda</span>
+      </div>
+
+      <div class="divisor"></div>
+
+      <div class=" btns owned flex-center">
+        <i class="fas fa-check-square"></i>
+        <span class="text-center stat">{{getOwnedCount()}}</span>
+        <span class="text-center text-muted">Marcadas</span>
+      </div>
+      <div class="btns missing flex-center">
+        <i class="far fa-square"></i>
+        <span class="text-center stat">{{getMissingCount()}}</span>
+        <span class="text-center text-muted">Faltantes</span>
+      </div>
+      <div class="btns duplicates flex-center">
+        <i class="far fa-clone"></i>
+        <span class="text-center stat">{{getDuplicateCount()}}</span>
+        <span class="text-center text-muted">Repetidas</span>
+      </div>
+
+      <div class="divisor"></div>
+
+      <div class="btns share flex-center text-center">
+        <i class="fas fa-share-alt"></i>
+        <span class="text-center text-muted">Compartir</span>
+      </div>
+
+      <div class="btns filter flex-center">
+        <i class="fa fa-filter"></i>
+        <span class="text-center text-muted">Filtros</span>
+      </div>
+
+
+    </div>
+
+
   </div>
 
 </body>
