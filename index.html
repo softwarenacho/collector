@@ -5,6 +5,8 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Nacho Betancourt">
+  <meta name="version" content="v.5">
   <title>Coleccionista</title>
 
   <!-- jQuery -->
@@ -82,9 +84,9 @@
                 </span>
               </div>
               <div class="duplicates flex-center" ng-if="card.active">
-                <i class="far fa-minus-square"></i>
+                <i class="far fa-minus-square" ng-click='gaveDuplicate(card)'></i>
                 <span class="number">({{card.duplicates}})</span>
-                <i class="far fa-plus-square"></i>
+                <i class="far fa-plus-square text-success" ng-click='gotDuplicate(card)'></i>
               </div>
             </div>
           </div>

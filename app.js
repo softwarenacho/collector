@@ -24,11 +24,11 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
       return this.active
     }
 
-    gotDuplicate() {
+    incrementDuplicate() {
       this.duplicates += 1;
     }
 
-    removeDuplicate() {
+    decrementDuplicate() {
       this.duplicates -= 1;
     }
 
@@ -165,6 +165,13 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
     for (let i in cards) {
       $scope.showDups(cards[i]);
     }
+  }
+
+  $scope.gotDuplicate = (card) => {
+    card.incrementDuplicate();
+  }
+  $scope.gaveDuplicate = (card) => {
+    card.decrementDuplicate();
   }
 
   function apply(){

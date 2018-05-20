@@ -5,7 +5,7 @@
 
 Usando una estructura similar a la estructura del álbum físico con clasificación por página, grupo y equipo, con interfaces orientadas a la usabilidad, usando la paleta de colores oficiales, y el mínimo de elementos visibles a la vez manteniendo la aplicación en una página
 
-(2018-05-20) El primer avance consiste en marcar el diseño, la estructura, la primera arquitectura, y la mínima funcionalidad, logrando lo siguiente:
+** v.5 (2018-05-20)** El primer avance consiste en marcar el diseño, la estructura, la primera arquitectura, y la mínima funcionalidad, logrando lo siguiente:
   - Se ejecuta un guardado local para preservar las cartas
   - ![Primer avance](imgs/180520.png)
 
@@ -23,3 +23,8 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
   - Modos de visualización ( minima sin paises, sólo numerados, lista con detalles)
   - Usuarios para ampliar la opciones de compartir
   - Implementar manifiesto y service workers
+
+
+### Bugs:
+
+- Doble click en mobile

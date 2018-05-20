@@ -63,6 +63,7 @@
   .jumbotron h3 {
     color: var(--fifa-gold);
     font-family: var(--frederika), cursive;
+    margin-top: 5px;
   }
 
   .jumbotron h5 {
@@ -132,6 +133,7 @@
       }
 
       .group-body .card {
+        cursor: pointer;
         flex-direction: column;
         justify-content: flex-start;
         padding: 5px;
@@ -145,6 +147,12 @@
       }
 
       .card .info .owned {color: var(--fifa-sblue);}
+
+      /* S duplicates */
+
+      .duplicates .number {color: var(--fifa-lblue);margin: 5px;}
+
+      /* E duplicates */
 
       /* S icons */
 
