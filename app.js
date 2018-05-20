@@ -46,12 +46,6 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
       this.generateCards(init,end);
     }
 
-    forJSON() {
-      this.cards.map( (card) => {
-        return { id: card.id, duplicates: card.duplicates };
-      } )
-    }
-
     generateCards(init,end) {
       for (let i = init; i <= end; i++) {
         let id = this.name == 'Coca Cola' ? `CC${i}` : i;
@@ -156,6 +150,13 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
       }
     }
     localStorage.setItem('groups', JSON.stringify(sCards));
+    swal({
+      type: 'success',
+      showConfirmButton: false,
+      position: 'bottom-right',
+      width: '100px',
+      timer: 1000
+    })
   }
 
   $scope.showDups = (card) => {
