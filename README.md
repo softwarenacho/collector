@@ -22,3 +22,4 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
   - Filtrados rápidos a la lista ( pais, pag, marcadas, desmarcadas . . . )
   - Modos de visualización ( minima sin paises, sólo numerados, lista con detalles)
   - Usuarios para ampliar la opciones de compartir
+  - Implementar manifiesto y service workers
