@@ -5,10 +5,14 @@
 
 Usando una estructura similar a la estructura del álbum físico con clasificación por página, grupo y equipo, con interfaces orientadas a la usabilidad, usando la paleta de colores oficiales, y el mínimo de elementos visibles a la vez manteniendo la aplicación en una página
 
-** v.5 (2018-05-20)** El primer avance consiste en marcar el diseño, la estructura, la primera arquitectura, y la mínima funcionalidad, logrando lo siguiente:
+**v.5 (2018-05-20)** El primer avance consiste en marcar el diseño, la estructura, la primera arquitectura, y la mínima funcionalidad, logrando lo siguiente:
   - Se ejecuta un guardado local para preservar las cartas
   - ![Primer avance](imgs/180520.png)
 
+**v.5.1 (2018-05-20** Se presenta la funcionalidad de duplicados que está ya casi completa en el commmit anterior pues su estructura ya estaba realizada en el diseño de las clases
+  - Ajustes visuales al diseño anterior, se agregan ambas funcionalidades
+  - Los duplicados ya estaban considerados en la versión anterior del controlador, funcionaron
+  - ![Mis 7 biglias](imgs/180520-dups.png)
 
 ### To do:
 
