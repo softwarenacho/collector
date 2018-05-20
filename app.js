@@ -194,10 +194,15 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
 
   $scope.getDuplicateCount = () => {
     let groupCards = $scope.groups.map( g => g.groupCards() );
-    let cards = groupCards.reduce((r, a) => [...r, ...a], [] );
-    let duplicates = cards.filter( c => c.duplicates ).map( d => d.duplicates );
-    let reduced = duplicates.reduce( ( base, element ) => base + element );
-    return reduced;
+    if (groupCards.length > 0) {
+      let cards = groupCards.reduce((r, a) => [...r, ...a], [] );
+      let duplicates = cards.filter( c => c.duplicates ).map( d => d.duplicates );
+      if (duplicates.length > 0) {
+        let reduced = duplicates.reduce( ( base, element ) => base + element );
+        return reduced;
+      }
+    }
+    return 0;
   }
 
   function apply(){

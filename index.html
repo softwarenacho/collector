@@ -100,14 +100,6 @@
   <div class="toolbar-container"
        ng-class="{'active': tActive}" >
 
-    <div class="save-btn flex-center" ng-class="{'btns': tActive}">
-      <i class="fas fa-save"
-        ng-click="saveCards()"
-        ng-class="{'unsaved': !saved}" >
-      </i>
-      <span class="text-center text-muted" ng-if="tActive"style="font-size: 35%;">Guardar</span>
-    </div>
-
     <div class="tools-btn flex-center">
       <i class="fas fa-circle" ng-if="!tActive"></i>
       <i class="fas fa-chevron-down" ng-if="tActive" ng-click="toggleTools()"></i>
@@ -155,6 +147,13 @@
         <span class="text-center text-muted">Filtros</span>
       </div>
 
+      <div class="save-btn flex-center" ng-class="{'save-btn': !tActive ,'btns': tActive}" style="color: var(--fifa-sblue);">
+        <i class="fas fa-save"
+          ng-click="saveCards()"
+          ng-class="{'unsaved': !saved}" >
+        </i>
+        <span class="text-center text-muted" ng-if="tActive">Guardar</span>
+      </div>
 
     </div>
 

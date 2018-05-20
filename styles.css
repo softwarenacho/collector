@@ -228,9 +228,10 @@
     .houdini-btns {
       width: 100%;
       padding: 5px 50px;
+      padding-right: 5px;
     }
 
-    .save-btn.btns, .houdini-btns .btns {
+    .btns {
       color: var(--fifa-lblue);
       min-height: 50px;
       height: 50px;
@@ -238,7 +239,7 @@
       flex-direction: column;
     }
 
-    .save-btn.btns, .houdini-btns i {
+    .save-btn.btns i, .houdini-btns i {
       font-size: 150%;
     }
 
