@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coleccionista</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+  <!-- ANGULAR -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-animate.min.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Font Awesome for awesomeness in icons -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+
+  <!-- Google Fonts (not so awesome but awesome) -->
+  <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Roboto:100,400,700" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js"></script>
+
+</head>
+
+<body ng-app="collectorApp" ng-controller="CardsController">
+
+  <div class="container-fluid">
+
+    <div class="jumbotron margin-bottom-10">
+      <h3 class="text-center text-bold">
+        Coleccionista
+        <span class="whisper"> webApp</span>
+        <h5 class="text-center text-small">Para 'Copa del Mundo Panini 2018' ®</h5>
+      </h3>
+    </div>
+
+    <div class="cards-groups">
+      <div class="cards-group margin-bottom-10" ng-repeat="group in groups" id="group-{{group.name}}">
+
+        <div class="group-head text-center" ng-dblclick="showAllDups(group)">
+          <span class="group" ng-if="group.group">
+            <i class="fas fa-futbol"></i>
+            <b class="letter">{{group.group}}</b>
+          </span>
+          <span class="group" ng-if="!group.group">
+            <i class="fas fa-trophy"></i>
+          </span>
+          <span class="name">{{group.name}}</span>
+          <span class="page thin">
+            {{group.page}}
+            <i class="fas fa-file"></i>
+          </span>
+        </div>
+
+        <div class="group-body flex-center">
+          <div class="cards">
+            <div class="card flex-center"
+            id="card-{{card.id}}"
+                 ng-repeat="card in group.cards"
+                 ng-click="$evalAsync(toggleCard(card))"
+                 ng-dblclick="showDups(card)"
+            >
+              <i class="far fa-check-square flex-center" ng-if="card.owned"></i>
+              <i class="far fa-square flex-center" ng-if="!card.owned" ng-class="{ 'checked': animatedCard == card.id }"></i>
+              <div class="info flex-center">
+                <span class="number" ng-class="{'owned': card.owned}">
+                  {{card.id}}
+                </span>
+              </div>
+              <div class="duplicates flex-center" ng-if="card.active">
+                <i class="far fa-minus-square"></i>
+                <span class="number">({{card.duplicates}})</span>
+                <i class="far fa-plus-square"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="save-btn flex-center">
+    <i class="fas fa-save"
+      ng-click="saveCards()"
+      ng-class="{'unsaved': !saved}" >
+    </i>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+/* S general */
+
+  :root {
+      --fifa-red: #D30208;
+      --fifa-gold: #E5C685;
+      --fifa-gold-t: #E5C68540;
+      --fifa-white: #F5EED5;
+      --fifa-black: #171714;
+      --fifa-sblue: #015386;
+      --fifa-lblue: #0074B1;
+      --roboto: 'Roboto';
+      --frederika: 'Fredericka the Great';
+  }
+
+  body {
+    background-color: var(--fifa-white);
+    height: 100vh;
+    font-family: var(--roboto), sans-serif;
+    position: relative;
+  }
+
+  .container-fluid {
+    position: relative;
+    padding: 0px;
+  }
+
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .margin-top-10 {
+    margin-top: 10px !important;
+  }
+
+  .margin-bottom-10 {
+    margin-bottom: 10px !important;
+  }
+
+  .whisper {
+    font-family: var(--roboto), sans-serif;
+    font-size: 75%;
+    font-weight: 100;
+    color: var(--fifa-white);
+  }
+
+  .thin {
+    font-weight: 100;
+  }
+
+/* E general */
+
+/* S header */
+
+  .jumbotron {
+    padding: 5px;
+    border-radius: 0 !important;
+    background-color: var(--fifa-sblue);
+    border: 0.5px solid var(--fifa-gold-t);
+  }
+
+  .jumbotron h3 {
+    color: var(--fifa-gold);
+    font-family: var(--frederika), cursive;
+  }
+
+  .jumbotron h5 {
+    color: var(--fifa-white);
+  }
+
+/* E header */
+
+/* S groups */
+
+  .cards-groups {
+    color: var(--fifa-black);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 0px 10px;
+  }
+
+  .cards-group {
+    color: var(--fifa-red);
+  }
+
+  /* S head */
+
+    .cards-group .group-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .group-head .letter {
+      font-family: var(--frederika), cursive;
+      color: var(--fifa-sblue);
+      font-size: 125%;
+    }
+
+    .group-head .fas {
+      font-size: 85%;
+    }
+
+    .group-head .name {
+      font-style: italic;
+      font-size: 125%;
+    }
+
+    .group-head .group, .group-head .page {
+      color: var(--fifa-gold);
+    }
+
+  /* E head */
+
+  /* S body */
+
+    .group-body {
+      border: 0.5px solid;
+      border-radius: 0 !important;
+      padding: 15px;
+      position: relative;
+    }
+
+    /* S card */
+
+      .cards {
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .group-body .card {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 5px;
+        margin: 0px 2.5px;
+        min-width: 50px;
+        width: 50px;
+        max-width: 50px;
+        max-height: 75px;
+        border-right: 0.5px solid #e5c68540;
+        border-bottom: 0.5px solid var(--fifa-gold-t);
+      }
+
+      .card .info .owned {color: var(--fifa-sblue);}
+
+      /* S icons */
+
+        .card .fa-square {
+          color: var(--fifa-gold-t);
+          font-size: 125%;
+          width: 25px;
+          height: 25px;
+        }
+
+        .card .fa-check-square {
+          color: var(--fifa-sblue);
+          font-size: 150%;
+          width: 25px;
+          height: 25px;
+        }
+
+      /* E icons */
+
+    /* E card */
+
+  /* E body */
+
+
+/* E groups */
+
+/* S Animations */
+
+.checked {
+  animation: checked-animation 0.5s infinite;
+}
+
+@keyframes checked-animation {
+  5%, 95% { font-size: 150%; }
+  10% ,100% { font-size: 125%; }
+}
+
+/* E Animations */
+
+/* S save btn */
+
+.save-btn {
+  color: var(--fifa-sblue);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-right: 5px;
+  width: 50px;
+  height: 50px;
+  font-size: 25px;
+}
+
+/* E save btn */
