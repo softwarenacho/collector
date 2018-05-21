@@ -1,10 +1,10 @@
 const collectorApp = angular.module('collectorApp', []);
 
-collectorApp.controller('CardsController', ['$scope', '$timeout' , function CardsController($scope, $timeout) {
+collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , function CardsController($scope, $timeout, $http) {
 
   let localCards;
   let localCardsIds;
-  if (localStorage.groups) localCards = JSON.parse(localStorage.groups);
+  if (localStorage.cards) localCards = JSON.parse(localStorage.cards);
   if (localCards) localCardsIds = localCards.map( c => c.card );
 
   $scope.filters = {
@@ -136,12 +136,13 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
       return;
     }
     if (!card.active) card.toggleCard();
+    save();
     $scope.cancelClick = false;
     $scope.clicked = false;
     $scope.animatedCard = 0;
   }
 
-  $scope.saveCards = () => {
+  function jsonCards() {
     let sCards = [];
     let cards = getAllCards();
     for (let i in cards) {
@@ -151,16 +152,45 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
         sCards.push(card);
       }
     }
-    localStorage.setItem('groups', JSON.stringify(sCards));
+    return { cards: sCards, user: localStorage.user }
+  }
+
+  $scope.saveCards = () => {
+    let url = "https://nacho-api.herokuapp.com//api/save-cards";
+    let data = jsonCards();
+    var request = {
+      method: 'POST',
+      url: url,
+      headers: {
+        'Content-Type':'application/json'
+      },
+      data: JSON.stringify(data)
+    }
+    $http(request).then(function(r){
+      try {
+        let user = r.data.user;
+        localStorage.setItem('user', user)
+        if (user.includes('userId:')) $scope.noUser = true;
+        save();
+        saveAlert('success');
+      } catch(e) {
+        saveAlert('error');
+      }
+    }, function(e){
+      saveAlert('error')
+    });
+  }
+
+  function saveAlert(type) {
     swal({
-      type: 'success',
+      type: type,
       showConfirmButton: false,
       position: 'bottom-right',
       width: '100px',
       backdrop: false,
       background: '#F5EED5',
       timer: 1000
-    })
+    });
   }
 
   $scope.showDups = (card) => {
@@ -176,9 +206,11 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
 
   $scope.gotDuplicate = (card) => {
     card.incrementDuplicate();
+    save();
   }
   $scope.gaveDuplicate = (card) => {
     if (card.duplicates > 0) card.decrementDuplicate();
+    save();
   }
 
   $scope.toggleTools = () => {
@@ -251,9 +283,46 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
     return cards;
   }
 
+  function save() {
+    let cards = jsonCards().cards;
+    localStorage.setItem('cards', JSON.stringify(cards));
+  }
 
   function apply(){
     if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != 'digest') $scope.$apply();
   }
 
 }]);
+
+collectorApp.directive('dblClickMobile', function () {
+
+  const DblClickInterval = 300; //milliseconds
+
+  var firstClickTime;
+  var waitingSecondClick = false;
+
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      element.bind('click', function (e) {
+
+        if (!waitingSecondClick) {
+          firstClickTime = (new Date()).getTime();
+          waitingSecondClick = true;
+
+          setTimeout(function () {
+            waitingSecondClick = false;
+          }, DblClickInterval);
+        }
+        else {
+          waitingSecondClick = false;
+
+          var time = (new Date()).getTime();
+          if (time - firstClickTime < DblClickInterval) {
+            scope.$apply(attrs.dblClickMobile);
+          }
+        }
+      });
+    }
+  };
+});

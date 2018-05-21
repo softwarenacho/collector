@@ -61,7 +61,7 @@
            ng-if="showGroup(group.cards)"
            id="group-{{group.name}}">
 
-        <div class="group-head text-center" ng-dblclick="showAllDups(group)">
+        <div class="group-head text-center" ng-dblclick="showAllDups(group)" dbl-click-mobile="showAllDups(group)">
           <span class="group" ng-if="group.group">
             <i class="fas fa-futbol"></i>
             <b class="letter">{{group.group}}</b>
@@ -84,6 +84,7 @@
                  ng-if="showCard(card)"
                  ng-click="$evalAsync(toggleCard(card))"
                  ng-dblclick="showDups(card)"
+                 dbl-click-mobile ="showDups(card)"
             >
               <i class="far fa-check-square flex-center" ng-if="card.owned"></i>
               <i class="far fa-square flex-center" ng-if="!card.owned" ng-class="{ 'checked': animatedCard == card.id }"></i>
@@ -107,8 +108,8 @@
     </div>
 
     <div class="footer margin-bottom-10 flex-center text-muted">
-      <i class="fas fa-code"></i> Nacho Betancourt, 2018
-      <i class="fab fa-github"></i><a href="https://github.com/softwarenacho/collector" target="_blank">softwarenacho/collector</a>
+      <i class="fas fa-code" style="color: var(--fifa-gold)"></i> Nacho Betancourt, 2018
+      <i class="fab fa-github" style="color: var(--fifa-gold)"></i><a href="https://github.com/softwarenacho/collector" target="_blank">softwarenacho/collector</a>
     </div>
 
   </div>

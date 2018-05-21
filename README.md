@@ -5,16 +5,16 @@
 
 Usando una estructura similar a la estructura del álbum físico con clasificación por página, grupo y equipo, con interfaces orientadas a la usabilidad, usando la paleta de colores oficiales, y el mínimo de elementos visibles a la vez manteniendo la aplicación en una página
 
-**v.5 (2018-05-20)** El primer avance consiste en marcar el diseño, la estructura, la primera arquitectura, y la mínima funcionalidad, logrando lo siguiente:
+**v0.5 (2018-05-20)** El primer avance consiste en marcar el diseño, la estructura, la primera arquitectura, y la mínima funcionalidad, logrando lo siguiente:
   - Se ejecuta un guardado local para preservar las cartas
   - ![Primer avance](imgs/180520.png)
 
-**v.5.1 (2018-05-20)** Se presenta la funcionalidad de duplicados que fue casi completa en el commmit anterior pues su estructura ya estaba realizada en el diseño de las clases
+**v0.5.1 (2018-05-20)** Se presenta la funcionalidad de duplicados que fue casi completa en el commmit anterior pues su estructura ya estaba realizada en el diseño de las clases
   - Ajustes visuales al diseño anterior, se agregan ambas funcionalidades
   - Los duplicados ya estaban considerados en la versión anterior del controlador, funcionaron
   - ![Mis 7 biglias](imgs/180520-dups.png)
 
-**v.5.2 (2018-05-21)** Agregada toolbar con las siguientes opciones: Ayuda, Compartir, Filtro, también se agregan las siguientes estadisticas: Marcadas, Faltantes, Repetidas
+**v0.5.2 (2018-05-21)** Agregada toolbar con las siguientes opciones: Ayuda, Compartir, Filtro, también se agregan las siguientes estadisticas: Marcadas, Faltantes, Repetidas
   - ![toolbar](imgs/180521-t.png)
   - Caja de filtros (Marcadas, Repetidas, Faltantes):
   - ![filters](imgs/180521-f.png)
@@ -22,25 +22,32 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
   - ![filters](imgs/180521-fw.png)
   - Las repetidas no pueden ser negativas
 
+**v0.7.5 (2018-05-21)**
+  - Desarrollado el método para guardar en DB por medio de un api en RAILS5 [(nacho-api)](https://github.com/softwarenacho/nacho-api)
+  - Modificado el compartamiento al guardar, ahora los cambios locales se guardan inmediatamente y el botón activa el pedido al api
+
 ### To do:
 
 - Publicar versión del primer commit
--  **v.5.2** ~~Mostrar información de totales ( cartas marcadas, restantes,  repetidas, totales )~~ No se agregó totales
-- **v.5.1** ~~DUPLICADOS: Visualizar (hay un avance oculto con declaración de intencions en el primer commit) y funcionalidades ( agregar quitar ...)~
+-  **v0.5.2** ~~Mostrar información de totales ( cartas marcadas, restantes,  repetidas, totales )~~ No se agregó totales
+- **v0.5.1** ~~DUPLICADOS: Visualizar (hay un avance oculto con declaración de intencions en el primer commit) y funcionalidades ( agregar quitar ...)~
   - ![duplicados en primer avance](imgs/180520-d.png)
-- Conexión a DB para preservar la información local y expandir las funcionalidades online
+- **v0.7.5** ~~Conexión a DB para preservar la información local y expandir las funcionalidades online~~
 - Agregar tutorial con el funcionamiento básico de la app
-- **v.5.2** ~~Barra inferior de herramientas con las siguientes funcionalidades~~
+- **v0.5.2** ~~Barra inferior de herramientas con las siguientes funcionalidades~~
   - Compartir lista con amigo por código ( comparar: diferencias generales, repetidas que no tengo, viceversa )
-  - **v.5.2** ~~Filtrados rápidos a la lista ( pais, pag, marcadas, desmarcadas . . . )~~ No se agregó filtro por país
+  - **v0.5.2** ~~Filtrados rápidos a la lista ( pais, pag, marcadas, desmarcadas . . . )~~ No se agregó filtro por país
   - Ayuda que muestra el modal de tutorial
 - Modos de visualización ( minima sin paises, sólo numerados, lista con detalles)
 - Usuarios para ampliar la opciones de compartir
+- Pin de usuario (después de usuario)
 - Implementar manifiesto y service workers
 - Busqueda rápida con resultados visuales
+- Botón para deshacer acción
+- Navegación rápida
 
 
 ### Bugs:
 
-- Doble click en mobile
-- **v.5.2** ~~Repetidas se pueden llevar a menos de 0~~
+- **v0.7.5** ~~Doble click en mobile~~
+- **v0.5.2** ~~Repetidas se pueden llevar a menos de 0~~
