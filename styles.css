@@ -38,6 +38,14 @@
     margin-bottom: 10px !important;
   }
 
+  .margin-left-10 {
+    margin-left: 10px !important;
+  }
+
+  .padding-right-50 {
+    padding-right: 50px !important;
+  }
+
   .whisper {
     font-family: var(--roboto), sans-serif;
     font-size: 75%;
@@ -55,6 +63,14 @@
     background-color: var(--fifa-gold-t);
     height: 100%;
     margin: 0 10px;
+  }
+
+  .pointer {
+    cursor: pointer !important;
+  }
+
+  .opacity-1 {
+    opacity: 1 !important;
   }
 
 /* E general */
@@ -88,6 +104,7 @@
     flex-direction: column;
     position: relative;
     padding: 0px 10px;
+    margin-bottom: 50px;
   }
 
   .cards-group {
@@ -229,6 +246,7 @@
       width: 100%;
       padding: 5px 50px;
       padding-right: 5px;
+      border-top: 1px solid var(--fifa-gold);
     }
 
     .btns {
@@ -257,6 +275,31 @@
     .houdini-btns .missing { color: var(--fifa-red); }
 
   /* E toolbar btn */
+
+  /* S filter box */
+
+  .houdini-btns .filter-box {
+    position: absolute;
+    display: flex;
+    right: 0;
+    bottom: 50px;
+    height: unset;
+    max-height: unset;
+    background-color: var(--fifa-white);
+    border: 1px solid var(--fifa-gold);
+  }
+
+  .filter-box div {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
+  }
+
+  .filter-box .close {font-size: 10px;align-self: flex-end;color: var(--fifa-red);opacity: 1;}
+
+  /* E filter box */
 
 /* E toolbar */
 

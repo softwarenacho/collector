@@ -7,6 +7,12 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
   if (localStorage.groups) localCards = JSON.parse(localStorage.groups);
   if (localCards) localCardsIds = localCards.map( c => c.card );
 
+  $scope.filters = {
+    'owned': false,
+    'missing': false,
+    'duplicates': false
+  }
+
   class Card {
 
     constructor(id) {
@@ -139,14 +145,12 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
 
   $scope.saveCards = () => {
     let sCards = [];
-    for (let i in $scope.groups) {
-      let cards = $scope.groups[i].groupCards();
-      for (let i in cards) {
-        if (cards[i].owned) {
-          let card = { card: cards[i].id, duplicates: cards[i].duplicates }
-          if (card.duplicates == 0) delete card.duplicates;
-          sCards.push(card);
-        }
+    let cards = getAllCards();
+    for (let i in cards) {
+      if (cards[i].owned) {
+        let card = { card: cards[i].id, duplicates: cards[i].duplicates }
+        if (card.duplicates == 0) delete card.duplicates;
+        sCards.push(card);
       }
     }
     localStorage.setItem('groups', JSON.stringify(sCards));
@@ -155,6 +159,8 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
       showConfirmButton: false,
       position: 'bottom-right',
       width: '100px',
+      backdrop: false,
+      background: '#F5EED5',
       timer: 1000
     })
   }
@@ -174,11 +180,43 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
     card.incrementDuplicate();
   }
   $scope.gaveDuplicate = (card) => {
-    card.decrementDuplicate();
+    if (card.duplicates > 0) card.decrementDuplicate();
   }
 
   $scope.toggleTools = () => {
     $scope.tActive = !$scope.tActive;
+  }
+
+  $scope.tFilter = false;
+
+  $scope.toggleFilter = () => {
+    $scope.tFilter = !$scope.tFilter;
+  }
+
+  $scope.cardFilter = (type) => {
+    $scope.filters[type] = !$scope.filters[type];
+    if (type == 'duplicates' && $scope.filters.duplicates) {
+      let cards = getAllCards();
+      cards.map( c => c.active = true)
+    } else {
+      let cards = getAllCards();
+      cards.map( c => c.active = false)
+    }
+  }
+
+  $scope.showCard = (card) => {
+    let show = true;
+    let filtersKeys = Object.keys($scope.filters).map( (k,v) => $scope.filters[k] );
+    if (filtersKeys.some( fk => fk)) {
+      if ($scope.filters.owned) show = card.owned;
+      if ($scope.filters.missing) show = !card.owned;
+      if ($scope.filters.duplicates) show = card.duplicates > 0;
+    }
+    return show;
+  }
+
+  $scope.showGroup = (cards) => {
+    return cards.some( card => $scope.showCard(card) );
   }
 
   $scope.getOwnedCount = () => {
@@ -205,6 +243,16 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
     }
     return 0;
   }
+
+  function getAllCards() {
+    let cards = [];
+    for (let i in $scope.groups) {
+      let groupCards = $scope.groups[i].groupCards();
+      groupCards.map( c => cards.push(c));
+    }
+    return cards;
+  }
+
 
   function apply(){
     if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != 'digest') $scope.$apply();

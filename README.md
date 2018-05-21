@@ -9,27 +9,38 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
   - Se ejecuta un guardado local para preservar las cartas
   - ![Primer avance](imgs/180520.png)
 
-**v.5.1 (2018-05-20** Se presenta la funcionalidad de duplicados que está ya casi completa en el commmit anterior pues su estructura ya estaba realizada en el diseño de las clases
+**v.5.1 (2018-05-20)** Se presenta la funcionalidad de duplicados que fue casi completa en el commmit anterior pues su estructura ya estaba realizada en el diseño de las clases
   - Ajustes visuales al diseño anterior, se agregan ambas funcionalidades
   - Los duplicados ya estaban considerados en la versión anterior del controlador, funcionaron
   - ![Mis 7 biglias](imgs/180520-dups.png)
 
+**v.5.2 (2018-05-21)** Agregada toolbar con las siguientes opciones: Ayuda, Compartir, Filtro, también se agregan las siguientes estadisticas: Marcadas, Faltantes, Repetidas
+  - ![toolbar](imgs/180521-t.png)
+  - Caja de filtros (Marcadas, Repetidas, Faltantes):
+  - ![filters](imgs/180521-f.png)
+  - Lógica de filtrado que oculta/desoculta las cartas/grupos dependiendo de su activación, aún no funciona con combinaciones complejas.
+  - ![filters](imgs/180521-fw.png)
+  - Las repetidas no pueden ser negativas
+
 ### To do:
 
 - Publicar versión del primer commit
-- Mostrar información de totales ( cartas marcadas, restantes,  repetidas, totales )
-- DUPLICADOS: Visualizar (hay un avance oculto con declaración de intencions en el primer commit) y funcionalidades ( agregar quitar ...)
+-  **v.5.2** ~~Mostrar información de totales ( cartas marcadas, restantes,  repetidas, totales )~~ No se agregó totales
+- **v.5.1** ~~DUPLICADOS: Visualizar (hay un avance oculto con declaración de intencions en el primer commit) y funcionalidades ( agregar quitar ...)~
   - ![duplicados en primer avance](imgs/180520-d.png)
 - Conexión a DB para preservar la información local y expandir las funcionalidades online
-- Barra inferior de herramientas con las siguientes funcionalidades
+- Agregar tutorial con el funcionamiento básico de la app
+- **v.5.2** ~~Barra inferior de herramientas con las siguientes funcionalidades~~
   - Compartir lista con amigo por código ( comparar: diferencias generales, repetidas que no tengo, viceversa )
-  - Filtrados rápidos a la lista ( pais, pag, marcadas, desmarcadas . . . )
-  - Modos de visualización ( minima sin paises, sólo numerados, lista con detalles)
-  - Usuarios para ampliar la opciones de compartir
-  - Implementar manifiesto y service workers
-  - Busqueda rápida con resultados visuales
+  - **v.5.2** ~~Filtrados rápidos a la lista ( pais, pag, marcadas, desmarcadas . . . )~~ No se agregó filtro por país
+  - Ayuda que muestra el modal de tutorial
+- Modos de visualización ( minima sin paises, sólo numerados, lista con detalles)
+- Usuarios para ampliar la opciones de compartir
+- Implementar manifiesto y service workers
+- Busqueda rápida con resultados visuales
 
 
 ### Bugs:
 
 - Doble click en mobile
+- **v.5.2** ~~Repetidas se pueden llevar a menos de 0~~

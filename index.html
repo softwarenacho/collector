@@ -56,7 +56,10 @@
     </div>
 
     <div class="cards-groups">
-      <div class="cards-group margin-bottom-10" ng-repeat="group in groups" id="group-{{group.name}}">
+      <div class="cards-group margin-bottom-10"
+           ng-repeat="group in (fGroups || groups)"
+           ng-if="showGroup(group.cards)"
+           id="group-{{group.name}}">
 
         <div class="group-head text-center" ng-dblclick="showAllDups(group)">
           <span class="group" ng-if="group.group">
@@ -78,6 +81,7 @@
             <div class="card flex-center"
             id="card-{{card.id}}"
                  ng-repeat="card in group.cards"
+                 ng-if="showCard(card)"
                  ng-click="$evalAsync(toggleCard(card))"
                  ng-dblclick="showDups(card)"
             >
@@ -90,7 +94,9 @@
               </div>
               <div class="duplicates flex-center" ng-if="card.active">
                 <i class="far fa-minus-square" ng-click='gaveDuplicate(card)'></i>
-                <span class="number">({{card.duplicates}})</span>
+                <span class="number flex-center">
+                  {{card.duplicates}}
+                </span>
                 <i class="far fa-plus-square text-success" ng-click='gotDuplicate(card)'></i>
               </div>
             </div>
@@ -105,7 +111,7 @@
   <div class="toolbar-container"
        ng-class="{'active': tActive}" >
 
-    <div class="tools-btn flex-center">
+    <div class="tools-btn flex-center pointer">
       <i class="fas fa-circle" ng-if="!tActive"></i>
       <i class="fas fa-chevron-down" ng-if="tActive" ng-click="toggleTools()"></i>
       <i class="fas fa-ellipsis-h"
@@ -115,9 +121,9 @@
       </i>
     </div>
 
-    <div class="houdini-btns flex-center">
+    <div class="houdini-btns flex-center" ng-class="{'padding-right-50': !tActive}">
 
-      <div class="btns share flex-center text-center">
+      <div class="btns help flex-center text-center pointer">
         <i class="fa fa-info-circle text-muted"></i>
         <span class="text-center text-muted">Ayuda</span>
       </div>
@@ -142,17 +148,36 @@
 
       <div class="divisor"></div>
 
-      <div class="btns share flex-center text-center">
+      <div class="btns share flex-center pointer">
         <i class="fas fa-share-alt"></i>
         <span class="text-center text-muted">Compartir</span>
       </div>
 
-      <div class="btns filter flex-center">
+      <div class="btns filter flex-center pointer" ng-click="toggleFilter()">
         <i class="fa fa-filter"></i>
         <span class="text-center text-muted">Filtros</span>
       </div>
 
-      <div class="save-btn flex-center" ng-class="{'save-btn': !tActive ,'btns': tActive}" style="color: var(--fifa-sblue);">
+      <div class="filter-box btns" ng-if="tFilter">
+        <div class="close pointer" ng-click="toggleFilter()">
+          <i class="far fa-window-close"></i>
+        </div>
+        <div class="owned pointer" ng-click="cardFilter('owned')" ng-class="{'opacity-1': filters.owned}">
+          <i class="fas fa-check-square"></i>
+          <span class="margin-left-10">Marcadas</span>
+        </div>
+        <div class="missing pointer" ng-click="cardFilter('missing')" ng-class="{'opacity-1': filters.missing}">
+          <i class="fas fa-square"></i>
+          <span class="margin-left-10">Faltantes</span>
+        </div>
+        <div class="duplicates pointer" ng-click="cardFilter('duplicates')" ng-class="{'opacity-1': filters.duplicates}">
+          <i class="fas fa-clone"></i>
+          <span class="margin-left-10">Repetidas</span>
+        </div>
+
+      </div>
+
+      <div class="save-btn flex-center pointer" ng-class="{'save-btn': !tActive ,'btns': tActive}" style="color: var(--fifa-sblue);">
         <i class="fas fa-save"
           ng-click="saveCards()"
           ng-class="{'unsaved': !saved}" >
