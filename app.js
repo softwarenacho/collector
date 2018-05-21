@@ -130,17 +130,15 @@ collectorApp.controller('CardsController', ['$scope', '$timeout' , function Card
       return;
     }
     $scope.clicked = true;
-    $timeout( () => {
-      if ($scope.cancelClick) {
-        $scope.cancelClick = false;
-        $scope.clicked = false;
-        return;
-      }
-      if (!card.active) card.toggleCard();
+    if ($scope.cancelClick) {
       $scope.cancelClick = false;
       $scope.clicked = false;
-      $scope.animatedCard = 0;
-    }, 500);
+      return;
+    }
+    if (!card.active) card.toggleCard();
+    $scope.cancelClick = false;
+    $scope.clicked = false;
+    $scope.animatedCard = 0;
   }
 
   $scope.saveCards = () => {
