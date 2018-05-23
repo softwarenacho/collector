@@ -26,6 +26,14 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
   - Desarrollado el método para guardar en DB por medio de un api en RAILS5 [(nacho-api)](https://github.com/softwarenacho/nacho-api)
   - Modificado el compartamiento al guardar, ahora los cambios locales se guardan inmediatamente y el botón activa el pedido al api
 
+**v0.8 (2018-05-23)**
+  - Agregado usuario con las siguientes caracteristicas, todas ellas consumen API:
+    - Registro de usuarios
+    - Log In los cambios son leeidos de DB (Sobreescriben el local)
+    - Cambio del nombre asignado por default
+    - Registro de pin
+    - Log out
+
 ### To do:
 
 - Publicar versión del primer commit
@@ -45,9 +53,15 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
 - Busqueda rápida con resultados visuales
 - Botón para deshacer acción
 - Navegación rápida
+- Comparar cambios entre la versión en línea y la local
+- Cambiar pin (botón deshabilitado)
 
 
 ### Bugs:
 
 - **v0.7.5** ~~Doble click en mobile~~
 - **v0.5.2** ~~Repetidas se pueden llevar a menos de 0~~
+
+#### Validaciones:
+ - Diferencias para activar ocultar el botón de guardado
+ - No guardar si está vacío

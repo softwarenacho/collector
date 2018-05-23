@@ -7,35 +7,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Nacho Betancourt">
   <meta name="version" content="v.5">
+  <link rel="icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.json">
   <title>Coleccionista</title>
 
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="assets/jquery-3.3.1.slim.min.js"></script>
 
   <!-- ANGULAR -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-animate.min.js"></script>
+  <script src="assets/angular.min.js"></script>
+  <script src="assets/angular-route.min.js"></script>
+  <script src="assets/angular-animate.min.js"></script>
 
   <!-- Sweeeeet Alerts -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+  <script src="assets/sweetalert2.js"></script>
   <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
   <script src="https://unpkg.com/promise-polyfill"></script>
 
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="assets/bootstrap.min.css">
 
   <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="assets/bootstrap.min.js"></script>
 
   <!-- Font Awesome for awesomeness in icons -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+  <link rel="stylesheet" href="assets/fontawesome.css">
 
   <!-- Google Fonts (not so awesome but awesome) -->
-  <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Roboto:100,400,700" rel="stylesheet">
+  <link href="assets/googlefonts.css" rel="stylesheet">
 
 
   <link rel="stylesheet" href="styles.css">
@@ -43,7 +42,7 @@
 
 </head>
 
-<body ng-app="collectorApp" ng-controller="CardsController">
+<body ng-app="collectorApp" ng-controller="CardsController" ng-init="init()">
 
   <div class="container-fluid">
 
@@ -114,8 +113,7 @@
 
   </div>
 
-  <div class="toolbar-container"
-       ng-class="{'active': tActive}" >
+  <div class="toolbar-container" ng-class="{'active': tActive}" >
 
     <div class="tools-btn flex-center pointer">
       <i class="fas fa-circle" ng-if="!tActive"></i>
@@ -129,14 +127,88 @@
 
     <div class="houdini-btns flex-center" ng-class="{'padding-right-50': !tActive}">
 
-      <div class="btns help flex-center text-center pointer">
+      <div class="btns user flex-center text-center pointer" ng-click="toggleUser()" ng-if="local.user">
+        <i class="far fa-user-circle"></i>
+        <span class="text-center text-muted">Usuario</span>
+      </div>
+
+      <div class="user-box" ng-if="showUserBox && tActive">
+
+        <div class="close pointer" ng-click="toggleUser()">
+          <i class="far fa-window-close"></i>
+        </div>
+
+        <h6 ng-if="fromSave">Te recomendamos cambiar tu nombre de usuario y establecer un pin para nunca perder tus datos.</h6>
+
+        <div class="name" ng-if="editUser || fromSave || showLogIn" ng-class="{'border-error': loginError == 'card'}">
+          <input id="name" class="input-placeholder" placeholder="" ng-model="user.name">
+          <span class="placeholder-label" ng-class="{'placeholder-label-up': user.name}">Usuario</span>
+        </div>
+
+        <div class="pin" ng-if="editUser || askPin || showLogIn" ng-class="{'border-error': loginError == 'pin'}">
+          <input id="pin" type="password" class="input-placeholder" placeholder="" maxlength="4" ng-model="user.pin">
+          <span class="placeholder-label" ng-class="{'placeholder-label-up': user.pin}">Pin (4 digitos)</span>
+        </div>
+
+        <div class="pin" ng-if="askPin || showRegister " ng-class="{'border-error': user.pin != user.pinConfirm}">
+          <input id="pinConfirm" type="password" class="input-placeholder" placeholder="" maxlength="4" ng-model="user.pinConfirm">
+          <span class="placeholder-label" ng-class="{'placeholder-label-up': user.pinConfirm}">Confirmar</span>
+        </div>
+
+        <h6 ng-if="showLogIn && failedLogIn && showRegister">
+          No encontramos una cuenta con este usuario, ¿Quieres registrarte? <i ng-click="disableRegister()" class="fas fa-times"></i>
+        </h6>
+        <h6 ng-if="showLogIn && !showRegister" ng-click="showRegisterBox()" class="pointer">Registrarme</h6>
+
+        <div class="log-in flex-center btn btn-primary" ng-if="showLogIn && !showRegister" ng-click="logIn()" ng-disabled="!user.name || !user.pin">
+          Iniciar
+          <i class="fas fa-chevron-right margin-left-10"></i>
+        </div>
+
+        <div class="log-in flex-center btn btn-primary" ng-if="showRegister" ng-click="register()" ng-disabled="!user.name || !user.pin">
+          Registrarse
+          <i class="fas fa-user-plus margin-left-10"></i>
+        </div>
+
+        <div class="save-user flex-center btn btn-primary" ng-if="editUser" ng-click="saveUser()" ng-disabled="!user.name || !user.pin">
+          <i class="fas fa-user-check margin-right-10"></i>
+          Cambiar nombre
+        </div>
+
+        <div class="save-user flex-center btn btn-primary" ng-if="askPin" ng-click="saveUserPin()" ng-disabled="!user.pin || user.pin != user.pinConfirm">
+          <i class="fas fa-user-lock margin-right-10"></i>
+          Establecer Pin
+        </div>
+
+        <span class="forgot pointer opacity-half text-muted" ng-if="false || editUser || failedLogIn">
+          ¿No recuerdas tu pin?
+        </span>
+
+        <div class="user-info" ng-if="!editUser && !askPin && !showLogIn">
+          <i class="fas fa-user"></i>
+          <span class="username pointer" ng-click="toggleEditUser()">{{user.name}}</span>
+          <br>
+          <i class="fas fa-cog user-options margin-right-10" ng-click="toggleEditUser()"></i>
+          <!-- Pendiente de editar pin -->
+          <!-- <i class="fas fa-lock user-options" ng-click="toggleEditPin()"></i> -->
+          <i class="fas fa-sign-out-alt text-warning user-options" ng-click="logOut()"></i>
+        </div>
+
+      </div>
+
+      <div class="btns log-in flex-center pointer" ng-click="toggleLogIn()" ng-if="!local.user">
+        <i class="fas fa-sign-in-alt"></i>
+        <span class="text-center text-muted">Iniciar</span>
+      </div>
+
+      <div class="btns help flex-center pointer opacity-half">
         <i class="fa fa-info-circle text-muted"></i>
         <span class="text-center text-muted">Ayuda</span>
       </div>
 
       <div class="divisor"></div>
 
-      <div class=" btns owned flex-center">
+      <div class="btns owned flex-center">
         <i class="fas fa-check-square"></i>
         <span class="text-center stat">{{getOwnedCount()}}</span>
         <span class="text-center text-muted">Marcadas</span>
@@ -154,7 +226,7 @@
 
       <div class="divisor"></div>
 
-      <div class="btns share flex-center pointer">
+      <div class="btns share flex-center pointer opacity-half">
         <i class="fas fa-share-alt"></i>
         <span class="text-center text-muted">Compartir</span>
       </div>
@@ -192,7 +264,6 @@
       </div>
 
     </div>
-
 
   </div>
 

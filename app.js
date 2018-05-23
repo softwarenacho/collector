@@ -2,34 +2,23 @@ const collectorApp = angular.module('collectorApp', []);
 
 collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , function CardsController($scope, $timeout, $http) {
 
-  let localCards;
-  let localCardsIds;
-  if (localStorage.cards) localCards = JSON.parse(localStorage.cards);
-  if (localCards) localCardsIds = localCards.map( c => c.card );
-
-  $scope.filters = {
-    'owned': false,
-    'missing': false,
-    'duplicates': false
-  }
-
   class Card {
 
     constructor(id) {
       this.id = id;
       this.owned = false;
-      this.active
+      this.active;
       this.duplicates = 0;
     }
 
     toggleCard() {
       this.owned = !this.owned;
-      return this.owned
+      return this.owned;
     }
 
     toggleActive() {
       this.active = !this.active;
-      return this.active
+      return this.active;
     }
 
     incrementDuplicate() {
@@ -56,10 +45,12 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
       for (let i = init; i <= end; i++) {
         let id = this.name == 'Coca Cola' ? `CC${i}` : i;
         let card = new Card(id);
-        if (localCards && localCardsIds && localCardsIds.includes(id)) {
-          let lCard = localCards[localCardsIds.indexOf(id)];
-          card.owned = true;
-          if (lCard.duplicates) card.duplicates = lCard.duplicates
+        if ($scope.localCardsIds && $scope.localCardsIds.length > 0) {
+          if ($scope.localCards && $scope.localCardsIds.includes(id)) {
+            card.owned = true;
+            let duplicates = $scope.localCards.find( (c) => c.card == id ).duplicates;
+            if (duplicates) card.duplicates =duplicates;
+          }
         }
         this.cards.push(card);
       }
@@ -71,30 +62,45 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
 
   }
 
-  let groupLetter = 'ABCDEFGH';
+  let enviroment = window.location.href;
+  let urlBase = enviroment.includes('softwarenacho') ? 'https://nacho-api.herokuapp.com/api/' : 'http://localhost:3000/api/';
+  $scope.local = localStorage;
 
-  let cardsGroups  = [
-    { name: 'Inicio', page: 1, init: 1, end: 6 },
-    { name: 'Estadios', page: 2, init: 8, end: 19 },
-    { name: 'Ciudades', page: 4, init: 20, end: 31 },
-    { name: 'Coca Cola', page: 54, init: 1, end: 9},
-    { name: 'Legends', page: 78, init: 672, end: 681}
-  ];
+  if (localStorage.cards && localStorage.cards.length > 0) $scope.localCards = JSON.parse(localStorage.cards);
+  if ($scope.localCards && $scope.localCards.length > 0) $scope.localCardsIds = $scope.localCards.map( c => c.card );
 
-  let countries = [
-   'Rusia', 'Arabia Saudita', 'Egipto', 'Uruguay',
-   'Portugal', 'España', 'Marruecos', 'Irán',
-   'Francia', 'Australia', 'Perú', 'Dinamarca',
-   'Argentina', 'Islandia', 'Croacia', 'Nigeria',
-   'Brasil', 'Suiza', 'Costa Rica', 'Serbia',
-   'Alemania', 'México', 'Suecia', 'Corea',
-   'Bélgica', 'Panamá', 'Túnez', 'Inglaterra',
-   'Polonia', 'Senegal', 'Colombia', 'Japón'
-  ];
 
-  fillCountries(countries);
+  $scope.init = () => {
+    $scope.user = { name: localStorage.user, pin: '', pinConfirm: ''};
+    $scope.showUserBox = false;
+    $scope.filters = {
+      'owned': false,
+      'missing': false,
+      'duplicates': false
+    }
+    let cardsGroups  = fillCards();
+    $scope.groups = fillGroups(cardsGroups);
+  }
 
-  function fillCountries(countries) {
+  function fillCards() {
+    let cardsGroups  = [
+      { name: 'Inicio', page: 1, init: 1, end: 7 },
+      { name: 'Estadios', page: 2, init: 8, end: 19 },
+      { name: 'Ciudades', page: 4, init: 20, end: 31 },
+      { name: 'Coca Cola', page: 54, init: 1, end: 9},
+      { name: 'Legends', page: 78, init: 672, end: 681}
+    ];
+    let countries = [
+     'Rusia', 'Arabia Saudita', 'Egipto', 'Uruguay',
+     'Portugal', 'España', 'Marruecos', 'Irán',
+     'Francia', 'Australia', 'Perú', 'Dinamarca',
+     'Argentina', 'Islandia', 'Croacia', 'Nigeria',
+     'Brasil', 'Suiza', 'Costa Rica', 'Serbia',
+     'Alemania', 'México', 'Suecia', 'Corea',
+     'Bélgica', 'Panamá', 'Túnez', 'Inglaterra',
+     'Polonia', 'Senegal', 'Colombia', 'Japón'
+    ];
+    let groupLetter = 'ABCDEFGH';
     let page = 10;
     let init = 32;
     let end = 51;
@@ -108,23 +114,21 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
       end += 20;
       if (country == 'México') page += 2;
     }
+    return cardsGroups.sort( (a, b) => a.page - b.page );
   }
-
-  let orderedGroups = cardsGroups.sort( (a, b) => a.page - b.page );
-  $scope.groups = fillGroups(orderedGroups);
 
   function fillGroups (pages) {
     let groups = [];
     for (let i in pages) {
       let page = pages[i];
-      let group = new CardGroup(page.name, page.page, page.group, page.init, page.end)
-      groups.push(group)
+      let group = new CardGroup(page.name, page.page, page.group, page.init, page.end);
+      groups.push(group);
     }
     return groups;
   }
 
   $scope.toggleCard = (card) => {
-    if(card.owned) $scope.animatedCard = card.id
+    if(card.owned) $scope.animatedCard = card.id;
     if ($scope.clicked) {
       $scope.cancelClick = true;
       return;
@@ -143,24 +147,45 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
   }
 
   function jsonCards() {
-    let sCards = [];
+    let jCards = [];
     let cards = getAllCards();
     for (let i in cards) {
       if (cards[i].owned) {
         let card = { card: cards[i].id, duplicates: cards[i].duplicates }
         if (card.duplicates == 0) delete card.duplicates;
-        sCards.push(card);
+        jCards.push(card);
       }
     }
-    return { cards: sCards, user: localStorage.user }
+    return {
+      card: {
+        cards: jCards,
+        user: localStorage.user
+      }
+    }
   }
 
+  function stringifyCards() {
+    let cards = JSON.parse(localStorage.cards);
+    let sCards = cards.map( (x) => {
+      let c = `${x.card}`;
+      c += x.duplicates > 0 ? '|' + x.duplicates : '';
+      if (cards.slice(-1)[0] != x) c += ','
+      return c;
+    });
+    return sCards.join('');
+  }
+
+  // API VALIDATED
   $scope.saveCards = () => {
-    let url = "https://nacho-api.herokuapp.com//api/save-cards";
-    let data = jsonCards();
+    let url = "save-cards";
+
+    let cardsString = stringifyCards();
+    let user = $scope.user.name || localStorage.user;
+    let data = { card: { cards: cardsString } };
+    if (user) data.card.user = user;
     var request = {
       method: 'POST',
-      url: url,
+      url: urlBase + url,
       headers: {
         'Content-Type':'application/json'
       },
@@ -168,29 +193,230 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
     }
     $http(request).then(function(r){
       try {
-        let user = r.data.user;
-        localStorage.setItem('user', user)
-        if (user.includes('userId:')) $scope.noUser = true;
-        save();
-        saveAlert('success');
+        if (r.data.error) {
+          saveAlert('error', 'bottom-right');
+        } else {
+          let user = r.data.user;
+          localStorage.setItem('user', user);
+          $scope.user.name = user;
+          save();
+          if (!r.data.pin) {
+            $scope.tActive = true;
+            $scope.showUserBox = true;
+            $scope.askPin = true;
+            $scope.fromSave = true;
+          }
+          saveAlert('success', 'bottom-right');
+        }
       } catch(e) {
-        saveAlert('error');
+        saveAlert('error', 'bottom-right');
       }
     }, function(e){
-      saveAlert('error')
+      saveAlert('error', 'bottom-right')
     });
   }
 
-  function saveAlert(type) {
+  function saveAlert(type, position) {
     swal({
       type: type,
       showConfirmButton: false,
-      position: 'bottom-right',
+      position: position,
       width: '100px',
       backdrop: false,
       background: '#F5EED5',
       timer: 1000
     });
+  }
+
+  function saveUserDB() {
+    let url = "save-user";
+    let data = { card: {
+      name: $scope.user.name,
+      password: $scope.user.pin,
+      user: localStorage.user
+    }};
+    var request = {
+      method: 'PUT',
+      url: urlBase + url,
+      headers: { 'Content-Type':'application/json' },
+      data: JSON.stringify(data)
+    }
+    $http(request).then(function(r){
+      try {
+        let user = r.data.user;
+        if (user) {
+          localStorage.setItem('user', user);
+          $scope.tActive = false;
+          $scope.showUserBox = false;
+          saveAlert('success', 'bottom-left');
+        } else {
+          saveAlert('error', 'bottom-left');
+        }
+      } catch(e) {
+        saveAlert('error', 'bottom-left');
+      }
+    }, function(e){
+      saveAlert('error', 'bottom-left')
+    });
+  }
+
+  $scope.saveUser = () => {
+    if ( $scope.user.name && $scope.user.pin ) {
+     saveUserDB();
+    } else {
+      if (!$scope.user.name) $scope.loginError = 'card';
+      if (!$scope.user.pin) $scope.loginError = 'pin';
+    }
+  }
+
+  // Probado y funcionando
+  function savePinDB() {
+    let url = "save-pin";
+    let data = { password: $scope.user.pin, name: $scope.user.name, user: localStorage.user };
+    var request = {
+      method: 'PUT',
+      url: urlBase + url,
+      headers: { 'Content-Type':'application/json' },
+      data: JSON.stringify(data)
+    }
+    $http(request).then(function(r){
+      try {
+        if (r.data.code == 0) {
+          $scope.tActive = false;
+          $scope.askPin = false;
+          $scope.showUserBox = false;
+          $scope.fromSave = false;
+          $scope.user.pin = '';
+          $scope.user.pinConfirm = '';
+          delete $scope.loginError;
+          localStorage.user = $scope.user.name;
+          saveAlert('success', 'bottom-left');
+        } else {
+          $scope.loginError = { error: r.data.error }
+          saveAlert('error', 'bottom-left');
+        }
+      } catch(e) {
+        saveAlert('error', 'bottom-left');
+      }
+    }, function(e){
+      saveAlert('error', 'bottom-left')
+    });
+  }
+
+  // Probado y funcionando
+  $scope.saveUserPin = () => {
+    savePinDB();
+  }
+
+  $scope.toggleLogIn = () => {
+    $scope.showLogIn = true;
+    $scope.showUserBox = true;
+  }
+
+  $scope.register = () => {
+    let url = "register-collector";
+    let cardsString = stringifyCards();
+    let data = { user: $scope.user.name, password: $scope.user.pin, cards: cardsString };
+    let request = {
+      method: 'POST',
+      url: urlBase + url,
+      headers: { 'Content-Type':'application/json' },
+      data: JSON.stringify(data)
+    }
+    $http(request).then(function(r){
+      try {
+        if (r.data.code == 0) {
+          localStorage.user = $scope.user.name;
+          $scope.showLogIn = false;
+          $scope.showUserBox = false;
+          $scope.tActive = false;
+          delete $scope.loginError;
+          $scope.user = { name: localStorage.user, pin: '', pinConfirm: ''};
+          saveAlert('success', 'bottom-left');
+        } else {
+          saveAlert('error', 'bottom-left');
+        }
+      } catch(e) {
+        saveAlert('error', 'bottom-left');
+      }
+    }, function(e){
+      saveAlert('error', 'bottom-left')
+    });
+  }
+
+  $scope.logIn = () => {
+    let url = "login-collector";
+    let data = { user: $scope.user.name, password: $scope.user.pin };
+    let request = {
+      method: 'POST',
+      url: urlBase + url,
+      headers: { 'Content-Type':'application/json' },
+      data: JSON.stringify(data)
+    }
+    $http(request).then(function(r){
+      try {
+        if (r.data.code == 0) {
+          localStorage.user = $scope.user.name;
+          $scope.fillCards(r.data.card.cards);
+          $scope.failedLogIn = false;
+          $scope.showLogIn = false;
+          $scope.showUserBox = false;
+          $scope.tActive = false;
+          delete $scope.loginError;
+          $scope.user = { name: localStorage.user, pin: '', pinConfirm: ''};
+          saveAlert('success', 'bottom-left');
+          $scope.init()
+        } else {
+          if (r.data.error == 'card') {
+            $scope.showRegister = true;
+          }
+          $scope.loginError  = r.data.error
+          $scope.failedLogIn = true;
+          saveAlert('error', 'bottom-left');
+        }
+      } catch(e) {
+        $scope.failedLogIn = true;
+        saveAlert('error', 'bottom-left');
+      }
+    }, function(e){
+      $scope.failedLogIn = true;
+      saveAlert('error', 'bottom-left')
+    });
+  }
+
+  $scope.showRegisterBox = () => {
+    $scope.showRegisterBox = true;
+    $scope.showRegister = true;
+  }
+
+  $scope.disableRegister = () => {
+    $scope.showRegister = false;
+    $scope.showRegisterBox = false;
+  }
+
+  $scope.fillCards = (cardsString) => {
+    let cards = formatCloudCards(cardsString);
+    localStorage.setItem('cards', JSON.stringify(cards));
+    $scope.localCards = localStorage.cards;
+    $scope.localCardsIds = cards.map( c => c.card );
+  }
+
+  function formatCloudCards(cardString) {
+    let cards = cardString.split(',');
+    return cards.map( (c) => {
+      let id = c.split('|')[0];
+      let duplicates = c.split('|')[1];
+      let object = { card: parseInt(id) }
+      if (duplicates) object.duplicates = parseInt(duplicates);
+      return object
+    } );
+  }
+
+  $scope.logOut = () => {
+    $scope.user = { name: '', pin: '', pinConfirm: ''};
+    localStorage.removeItem('user');
+    $scope.showUserBox = false;
+    $scope.tActive = false;
   }
 
   $scope.showDups = (card) => {
@@ -208,9 +434,28 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
     card.incrementDuplicate();
     save();
   }
+
   $scope.gaveDuplicate = (card) => {
     if (card.duplicates > 0) card.decrementDuplicate();
     save();
+  }
+
+  $scope.toggleUser = () => {
+    $scope.showUserBox = !$scope.showUserBox;
+    if (!$scope.showUserBox) {
+      $scope.editUser = false;
+      $scope.askPin = false;
+      $scope.showLogIn = false;
+      $scope.showRegisterBox = false;
+      $scope.showRegister = false;
+      $scope.fromSave = false;
+    }
+    $scope.tActive = true;
+  }
+
+  $scope.editUser = false;
+  $scope.toggleEditUser = () => {
+    $scope.editUser = !$scope.editUser;
   }
 
   $scope.toggleTools = () => {
@@ -220,6 +465,7 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
   $scope.tFilter = false;
 
   $scope.toggleFilter = () => {
+    $scope.tActive = true;
     $scope.tFilter = !$scope.tFilter;
   }
 
@@ -284,7 +530,7 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
   }
 
   function save() {
-    let cards = jsonCards().cards;
+    let cards = jsonCards().card.cards;
     localStorage.setItem('cards', JSON.stringify(cards));
   }
 

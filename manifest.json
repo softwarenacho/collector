@@ -1,0 +1,27 @@
+{
+  "short_name": "Collector",
+  "name": "Nacho's album collector",
+  "background_color": "#0074B1",
+  "theme_color": "#0074B1",
+  "display": "standalone",
+  "orientation": "portrait",
+  "description": "Aplicación de coleccionista para álbum 'Copa del Mundo Panini 2018'",
+  "icons": [
+    {
+      "src": "images/icon-1x.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "images/icon-2x.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "images/icon-4x.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "index.html"
+}

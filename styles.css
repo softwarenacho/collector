@@ -42,6 +42,14 @@
     margin-left: 10px !important;
   }
 
+  .margin-right-10 {
+    margin-right: 10px !important;
+  }
+
+  .padding-right-25 {
+    padding-right: 25px !important;
+  }
+
   .padding-right-50 {
     padding-right: 50px !important;
   }
@@ -57,12 +65,17 @@
     font-weight: 100;
   }
 
+  .border-error {
+    border-bottom: 2.5px dotted var(--fifa-red);
+    color: var(--fifa-red);
+  }
+
   .divisor {
     width: 2.5px;
     margin: 0px 5px !important;
     background-color: var(--fifa-gold-t);
     height: 100%;
-    margin: 0 10px;
+    margin: 0 2.5px !important;
   }
 
   .pointer {
@@ -71,6 +84,22 @@
 
   .opacity-1 {
     opacity: 1 !important;
+  }
+
+  .opacity-half {
+    opacity: 0.5 !important;
+  }
+
+  input[type=password] {
+    -webkit-text-security: disc;
+  }
+
+  .forgot {
+    margin: 10px 0px;
+    text-align: center;
+    font-size: 75% !important;
+    color: var(--fifa-lblue);
+    text-decoration: underline;
   }
 
 /* E general */
@@ -201,7 +230,6 @@
 
   /* E body */
 
-
 /* E groups */
 
 /* S toolbar */
@@ -270,9 +298,11 @@
       font-size: 50%;
     }
 
+    .houdini-btns .user {color: var(--fifa-lblue);/* padding: 0px 10px; */}
     .houdini-btns .share { color: var(--fifa-lblue); }
     .houdini-btns .owned { color: var(--fifa-sblue); }
     .houdini-btns .missing { color: var(--fifa-red); }
+    .houdini-btns .log-in {/* color: var(--fifa-sblue); */}
 
   /* E toolbar btn */
 
@@ -297,7 +327,18 @@
     opacity: 0.5;
   }
 
-  .filter-box .close {font-size: 10px;align-self: flex-end;color: var(--fifa-red);opacity: 1;}
+  .close {
+    font-size: 10px;
+    align-self: flex-end;
+    color: var(--fifa-red);
+    opacity: 0.5;
+    margin-right: -5px;
+  }
+
+  .close:hover {
+    opacity: 1 !important;
+    color: var(--fifa-red);
+  }
 
   /* E filter box */
 
@@ -330,3 +371,96 @@
 }
 
 /* E save btn */
+
+/* S user modal */
+
+  .user-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    color: var(--fifa-sblue);
+    left: 0;
+    bottom: 50px;
+    height: unset;
+    padding: 5px 10px;
+    max-height: unset;
+    max-width: 175px;
+    background-color: var(--fifa-white);
+    border: 1px solid var(--fifa-gold);
+  }
+
+  .user-box .name, .user-box .pin {
+    margin: 5px 0px;
+}
+
+  .user-box .name {position: relative;}
+
+  .user-box .pin {position: relative;}
+
+  .user-box h6 {margin: 7.5px 0px;text-align: center;}
+
+  .user-info {/* padding: 15px 10px; */font-size: 135%;text-align: center;}
+
+  .user-info span {
+    font-size: 100%;
+    color: var(--fifa-sblue);
+    border-bottom: 1px dotted var(--fifa-lblue);
+  }
+
+
+  .user-info i {
+    font-size: 80%;
+    color: var(--fifa-lblue);
+    margin-right: 10px;
+  }
+
+  .user-options {
+    color: #777 !important;
+    margin: 0 !important;
+    margin: 5px !important;
+    font-size: 75% !important;
+    cursor: pointer;
+  }
+
+/* E user modal */
+
+/* S placeholder to label */
+
+  .input-placeholder {
+    padding: 5px !important;
+    padding-top: 25px !important;
+    margin: 0 !important;
+    height: 50px !important;
+    width: 100%;
+  }
+
+  .placeholder-label {
+    display: flex;
+    font-size: 20px !important;
+    text-transform: uppercase;
+    position: absolute;
+    top: 7.5px;
+    z-index: 2;
+    margin-left: 5px;
+    color: darkgrey;
+    pointer-events: none;
+    white-space: nowrap;
+    text-transform: capitalize;
+  }
+
+  .input-placeholder:focus + .placeholder-label {
+    animation: placeholder-up 0.5s forwards;
+  }
+
+  .placeholder-label-up {
+    animation: placeholder-up 0.5s forwards;
+  }
+
+  @keyframes placeholder-up {
+    to {
+      font-size: 14px;
+      transform: translateY(-5px);
+    }
+  }
+
+/* D placeholder to label */
