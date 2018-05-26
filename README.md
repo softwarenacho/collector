@@ -36,25 +36,26 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
 
 ### To do:
 
-- Publicar versión del primer commit
--  **v0.5.2** ~~Mostrar información de totales ( cartas marcadas, restantes,  repetidas, totales )~~ No se agregó totales
 - **v0.5.1** ~~DUPLICADOS: Visualizar (hay un avance oculto con declaración de intencions en el primer commit) y funcionalidades ( agregar quitar ...)~
+-  **v0.5.2** ~~Mostrar información de totales ( cartas marcadas, restantes,  repetidas, totales )~~ No se agregó totales
   - ![duplicados en primer avance](imgs/180520-d.png)
-- **v0.7.5** ~~Conexión a DB para preservar la información local y expandir las funcionalidades online~~
-- Agregar tutorial con el funcionamiento básico de la app
 - **v0.5.2** ~~Barra inferior de herramientas con las siguientes funcionalidades~~
   - Compartir lista con amigo por código ( comparar: diferencias generales, repetidas que no tengo, viceversa )
   - **v0.5.2** ~~Filtrados rápidos a la lista ( pais, pag, marcadas, desmarcadas . . . )~~ No se agregó filtro por país
   - Ayuda que muestra el modal de tutorial
-- Modos de visualización ( minima sin paises, sólo numerados, lista con detalles)
-- Usuarios para ampliar la opciones de compartir
-- Pin de usuario (después de usuario)
+- **v0.7.5** ~~Conexión a DB para preservar la información local y expandir las funcionalidades online~~
+- **v0.8** ~~Publicar versión del primer commit~~
+- **v0.8** ~~Usuarios para ampliar la opciones de compartir~~ No hay compartir sólo usuarios
+- **v0.8** ~~Pin de usuario (después de usuario)~~
+- Agregar tutorial con el funcionamiento básico de la app
+- Modos de visualización ( minima sin paises, sólo numerados, lista con detalles )
 - Implementar manifiesto y service workers
 - Busqueda rápida con resultados visuales
 - Botón para deshacer acción
 - Navegación rápida
 - Comparar cambios entre la versión en línea y la local
 - Cambiar pin (botón deshabilitado)
+- Modo inverso para las faltantes
 
 
 ### Bugs:
@@ -63,5 +64,5 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
 - **v0.5.2** ~~Repetidas se pueden llevar a menos de 0~~
 
 #### Validaciones:
- - Diferencias para activar ocultar el botón de guardado
+ - Diferencias para activar/ocultar el botón de guardado
  - No guardar si está vacío
