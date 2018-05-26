@@ -61,6 +61,8 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
 - Cambiar pin (botón deshabilitado)
 - Modo inverso para las faltantes
 - Spinners en cargas
+- Modo navegación ( saltar entre páginas o paises )
+- Visualización: if card > 10 width sólo 5
 
 
 ### Bugs:
