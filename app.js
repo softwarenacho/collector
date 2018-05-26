@@ -48,8 +48,9 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
         if ($scope.localCardsIds && $scope.localCardsIds.length > 0) {
           if ($scope.localCards && $scope.localCardsIds.includes(id)) {
             card.owned = true;
-            let duplicates = $scope.localCards.find( (c) => c.card == id ).duplicates;
-            if (duplicates) card.duplicates =duplicates;
+            let lCards = typeof($scope.localCards) == 'string' ? JSON.parse( $scope.localCards ) : $scope.localCards;
+            let duplicates = lCards.find( c => c.card == id ).duplicates;
+            if (duplicates) card.duplicates = duplicates;
           }
         }
         this.cards.push(card);
@@ -165,17 +166,18 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
   }
 
   function stringifyCards() {
-    let cards = JSON.parse(localStorage.cards);
-    let sCards = cards.map( (x) => {
-      let c = `${x.card}`;
-      c += x.duplicates > 0 ? '|' + x.duplicates : '';
-      if (cards.slice(-1)[0] != x) c += ','
-      return c;
-    });
-    return sCards.join('');
+    if (localStorage.cards) {
+      let cards = JSON.parse(localStorage.cards);
+      let sCards = cards.map( (x) => {
+        let c = `${x.card}`;
+        c += x.duplicates > 0 ? '|' + x.duplicates : '';
+        if (cards.slice(-1)[0] != x) c += ','
+        return c;
+      });
+      return sCards.join('');
+    }
   }
 
-  // API VALIDATED
   $scope.saveCards = () => {
     let url = "save-cards";
 
@@ -469,8 +471,10 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
     $scope.tFilter = !$scope.tFilter;
   }
 
-  $scope.cardFilter = (type) => {
-    $scope.filters[type] = !$scope.filters[type];
+  $scope.cardFilter = type => {
+    Object.keys($scope.filters).map( f => {
+      $scope.filters[f] = f == type && !$scope.filters[f];
+    });
     if (type == 'duplicates' && $scope.filters.duplicates) {
       let cards = getAllCards();
       cards.map( c => c.active = true)
@@ -478,6 +482,10 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
       let cards = getAllCards();
       cards.map( c => c.active = false)
     }
+  }
+
+  $scope.fActive = () => {
+    return $scope.filters.owned || $scope.filters.duplicates || $scope.filters.missing;
   }
 
   $scope.showCard = (card) => {

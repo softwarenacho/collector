@@ -33,6 +33,7 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
     - Cambio del nombre asignado por default
     - Registro de pin
     - Log out
+  - Implementado manifesto
 
 ### To do:
 
@@ -49,7 +50,8 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
 - **v0.8** ~~Pin de usuario (después de usuario)~~
 - Agregar tutorial con el funcionamiento básico de la app
 - Modos de visualización ( minima sin paises, sólo numerados, lista con detalles )
-- Implementar manifiesto y service workers
+- **v0.8** ~~Implementar manifiesto~~
+- Implementar service workers
 - Busqueda rápida con resultados visuales
 - Botón para deshacer acción
 - Navegación rápida
@@ -60,7 +62,7 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
 
 ### Bugs:
 
-- **v0.7.5** ~~Doble click en mobile~~
+- Doble click en mobile ~~**v0.7.5**~~v.0.8
 - **v0.5.2** ~~Repetidas se pueden llevar a menos de 0~~
 
 #### Validaciones:

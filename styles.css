@@ -22,6 +22,8 @@
   .container-fluid {
     position: relative;
     padding: 0px;
+    flex-direction: column;
+    max-width: 999px;
   }
 
   .flex-center {
@@ -30,8 +32,20 @@
     align-items: center;
   }
 
+  .margin-0 {
+    margin: 0 !important;
+  }
+
+  .margin-15 {
+    margin: 15px;
+  }
+
   .margin-top-10 {
     margin-top: 10px !important;
+  }
+
+  .margin-bottom-5 {
+    margin-bottom: 5px !important;
   }
 
   .margin-bottom-10 {
@@ -40,6 +54,10 @@
 
   .margin-left-10 {
     margin-left: 10px !important;
+  }
+
+  .margin-right-5 {
+    margin-right: 5px !important;
   }
 
   .margin-right-10 {
@@ -62,6 +80,7 @@
   }
 
   .thin {
+    var(--fifa-lblue);
     font-weight: 100;
   }
 
@@ -111,6 +130,7 @@
     border-radius: 0 !important;
     background-color: var(--fifa-sblue);
     border: 0.5px solid var(--fifa-gold-t);
+    width: 100vw;
   }
 
   .jumbotron h3 {
@@ -164,7 +184,7 @@
     }
 
     .group-head .group, .group-head .page {
-      color: var(--fifa-gold);
+      color: var(--fifa-lblue);
     }
 
   /* E head */
@@ -188,6 +208,7 @@
 
       .group-body .card {
         cursor: pointer;
+        position: relative;
         flex-direction: column;
         justify-content: flex-start;
         padding: 5px;
@@ -204,7 +225,24 @@
 
       /* S duplicates */
 
-      .duplicates .number {color: var(--fifa-lblue);margin: 5px;}
+      .duplicates-toggler {
+        display: none;
+        color: var(--fifa-lblue);
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 2.5px;
+        font-size: 10px;
+      }
+
+      .card:hover .duplicates-toggler {
+        display: block;
+      }
+
+      .duplicates .number {
+        color: var(--fifa-lblue);
+        margin: 5px;
+      }
 
       /* E duplicates */
 
@@ -237,7 +275,9 @@
   /* S tools btn */
 
     .toolbar-container {
-      height: 0px;
+      height: 0;
+      width: 100%;
+      position: relative;
     }
 
     .toolbar-container.active {
@@ -250,7 +290,7 @@
     }
 
     .tools-btn {
-      color: var(--fifa-gold);
+      color: var(--fifa-black);
       position: fixed;
       bottom: 0;
       left: 0;
@@ -258,6 +298,10 @@
       width: 50px;
       height: 50px;
       font-size: 25px;
+    }
+
+    .tools-btn.collapse {
+      width: 30px;
     }
 
     .tools-btn .fa-ellipsis-h {
@@ -275,6 +319,10 @@
       padding: 5px 50px;
       padding-right: 5px;
       border-top: 1px solid var(--fifa-gold);
+    }
+
+    .houdini-btns.expanded {
+      padding-left: 35px;
     }
 
     .btns {

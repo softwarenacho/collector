@@ -1,34 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Nacho Betancourt">
-  <meta name="version" content="v.5">
+  <meta name="version" content="v0.8">
+  <meta name="description" content="Aplicación de coleccionista para álbum 'Copa del Mundo Panini 2018' ®">
   <link rel="icon" href="favicon.ico">
   <link rel="manifest" href="manifest.json">
   <title>Coleccionista</title>
 
-  <!-- jQuery -->
-  <script src="assets/jquery-3.3.1.slim.min.js"></script>
-
-  <!-- ANGULAR -->
-  <script src="assets/angular.min.js"></script>
-  <script src="assets/angular-route.min.js"></script>
-  <script src="assets/angular-animate.min.js"></script>
-
-  <!-- Sweeeeet Alerts -->
-  <script src="assets/sweetalert2.js"></script>
-  <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
-  <script src="https://unpkg.com/promise-polyfill"></script>
-
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="assets/bootstrap.min.css">
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="assets/bootstrap.min.js"></script>
 
   <!-- Font Awesome for awesomeness in icons -->
   <link rel="stylesheet" href="assets/fontawesome.css">
@@ -36,15 +21,13 @@
   <!-- Google Fonts (not so awesome but awesome) -->
   <link href="assets/googlefonts.css" rel="stylesheet">
 
-
   <link rel="stylesheet" href="styles.css">
-  <script src="app.js"></script>
 
 </head>
 
 <body ng-app="collectorApp" ng-controller="CardsController" ng-init="init()">
 
-  <div class="container-fluid">
+  <div class="container-fluid flex-center">
 
     <div class="jumbotron margin-bottom-10">
       <h3 class="text-center text-bold">
@@ -60,7 +43,7 @@
            ng-if="showGroup(group.cards)"
            id="group-{{group.name}}">
 
-        <div class="group-head text-center" ng-dblclick="showAllDups(group)" dbl-click-mobile="showAllDups(group)">
+        <div class="group-head text-center" ng-dblclick="showAllDups(group)">
           <span class="group" ng-if="group.group">
             <i class="fas fa-futbol"></i>
             <b class="letter">{{group.group}}</b>
@@ -81,20 +64,38 @@
             id="card-{{card.id}}"
                  ng-repeat="card in group.cards"
                  ng-if="showCard(card)"
-                 ng-click="$evalAsync(toggleCard(card))"
-                 ng-dblclick="showDups(card)"
-                 dbl-click-mobile ="showDups(card)"
             >
-              <i class="far fa-check-square flex-center" ng-if="card.owned"></i>
-              <i class="far fa-square flex-center" ng-if="!card.owned" ng-class="{ 'checked': animatedCard == card.id }"></i>
+              <i class="far fa-check-square flex-center"
+                 ng-if="card.owned"
+                 ng-click="$evalAsync(toggleCard(card))">
+              </i>
+              <i class="far fa-square flex-center"
+                 ng-if="!card.owned"
+                 ng-class="{ 'checked': animatedCard == card.id }"
+                 ng-click="$evalAsync(toggleCard(card))">
+              </i>
               <div class="info flex-center">
                 <span class="number" ng-class="{'owned': card.owned}">
                   {{card.id}}
                 </span>
               </div>
+
+              <i class="fas fa-copy duplicates-toggler"
+                 ng-click="showDups(card)"
+                 ng-if="card.owned && !card.active">
+               <span ng-if="card.duplicates > 0">
+                {{card.duplicates}}
+              </span>
+             </i>
+              <i class="fas fa-chevron-up duplicates-toggler margin-0"
+                 ng-click="showDups(card)"
+                 ng-class="{'active': card.active}"
+                 ng-if="card.owned && card.active"></i>
+
               <div class="duplicates flex-center" ng-if="card.active">
                 <i class="far fa-minus-square" ng-click='gaveDuplicate(card)'></i>
-                <span class="number flex-center">
+                <span class="number flex-center"
+                 ng-click="showDups(card)">
                   {{card.duplicates}}
                 </span>
                 <i class="far fa-plus-square text-success" ng-click='gotDuplicate(card)'></i>
@@ -106,166 +107,205 @@
       </div>
     </div>
 
-    <div class="footer margin-bottom-10 flex-center text-muted">
-      <i class="fas fa-code" style="color: var(--fifa-gold)"></i> Nacho Betancourt, 2018
-      <i class="fab fa-github" style="color: var(--fifa-gold)"></i><a href="https://github.com/softwarenacho/collector" target="_blank">softwarenacho/collector</a>
+    <div class="footer margin-bottom-5 flex-center text-muted" style="align-items: baseline; width:100%;">
+      <span>
+        <i class="fas fa-code margin-15" style="color: var(--fifa-black)"></i> Nacho Betancourt, 2018
+      </span>
+      <span>
+        <i class="fab fa-github margin-15" style="color: var(--fifa-black)"></i><a href="https://github.com/softwarenacho/collector" target="_blank">softwarenacho/collector</a>
+      </span>
     </div>
 
-  </div>
+    <div class="toolbar-container" ng-class="{'active': tActive}" >
 
-  <div class="toolbar-container" ng-class="{'active': tActive}" >
-
-    <div class="tools-btn flex-center pointer">
-      <i class="fas fa-circle" ng-if="!tActive"></i>
-      <i class="fas fa-chevron-down" ng-if="tActive" ng-click="toggleTools()"></i>
-      <i class="fas fa-ellipsis-h"
-        ng-if="!tActive"
-        ng-click="toggleTools()"
-        ng-class="{'active': !tActive}" >
-      </i>
-    </div>
-
-    <div class="houdini-btns flex-center" ng-class="{'padding-right-50': !tActive}">
-
-      <div class="btns user flex-center text-center pointer" ng-click="toggleUser()" ng-if="local.user">
-        <i class="far fa-user-circle"></i>
-        <span class="text-center text-muted">Usuario</span>
-      </div>
-
-      <div class="user-box" ng-if="showUserBox && tActive">
-
-        <div class="close pointer" ng-click="toggleUser()">
-          <i class="far fa-window-close"></i>
-        </div>
-
-        <h6 ng-if="fromSave">Te recomendamos cambiar tu nombre de usuario y establecer un pin para nunca perder tus datos.</h6>
-
-        <div class="name" ng-if="editUser || fromSave || showLogIn" ng-class="{'border-error': loginError == 'card'}">
-          <input id="name" class="input-placeholder" placeholder="" ng-model="user.name">
-          <span class="placeholder-label" ng-class="{'placeholder-label-up': user.name}">Usuario</span>
-        </div>
-
-        <div class="pin" ng-if="editUser || askPin || showLogIn" ng-class="{'border-error': loginError == 'pin'}">
-          <input id="pin" type="password" class="input-placeholder" placeholder="" maxlength="4" ng-model="user.pin">
-          <span class="placeholder-label" ng-class="{'placeholder-label-up': user.pin}">Pin (4 digitos)</span>
-        </div>
-
-        <div class="pin" ng-if="askPin || showRegister " ng-class="{'border-error': user.pin != user.pinConfirm}">
-          <input id="pinConfirm" type="password" class="input-placeholder" placeholder="" maxlength="4" ng-model="user.pinConfirm">
-          <span class="placeholder-label" ng-class="{'placeholder-label-up': user.pinConfirm}">Confirmar</span>
-        </div>
-
-        <h6 ng-if="showLogIn && failedLogIn && showRegister">
-          No encontramos una cuenta con este usuario, ¿Quieres registrarte? <i ng-click="disableRegister()" class="fas fa-times"></i>
-        </h6>
-        <h6 ng-if="showLogIn && !showRegister" ng-click="showRegisterBox()" class="pointer">Registrarme</h6>
-
-        <div class="log-in flex-center btn btn-primary" ng-if="showLogIn && !showRegister" ng-click="logIn()" ng-disabled="!user.name || !user.pin">
-          Iniciar
-          <i class="fas fa-chevron-right margin-left-10"></i>
-        </div>
-
-        <div class="log-in flex-center btn btn-primary" ng-if="showRegister" ng-click="register()" ng-disabled="!user.name || !user.pin">
-          Registrarse
-          <i class="fas fa-user-plus margin-left-10"></i>
-        </div>
-
-        <div class="save-user flex-center btn btn-primary" ng-if="editUser" ng-click="saveUser()" ng-disabled="!user.name || !user.pin">
-          <i class="fas fa-user-check margin-right-10"></i>
-          Cambiar nombre
-        </div>
-
-        <div class="save-user flex-center btn btn-primary" ng-if="askPin" ng-click="saveUserPin()" ng-disabled="!user.pin || user.pin != user.pinConfirm">
-          <i class="fas fa-user-lock margin-right-10"></i>
-          Establecer Pin
-        </div>
-
-        <span class="forgot pointer opacity-half text-muted" ng-if="false || editUser || failedLogIn">
-          ¿No recuerdas tu pin?
-        </span>
-
-        <div class="user-info" ng-if="!editUser && !askPin && !showLogIn">
-          <i class="fas fa-user"></i>
-          <span class="username pointer" ng-click="toggleEditUser()">{{user.name}}</span>
-          <br>
-          <i class="fas fa-cog user-options margin-right-10" ng-click="toggleEditUser()"></i>
-          <!-- Pendiente de editar pin -->
-          <!-- <i class="fas fa-lock user-options" ng-click="toggleEditPin()"></i> -->
-          <i class="fas fa-sign-out-alt text-warning user-options" ng-click="logOut()"></i>
-        </div>
-
-      </div>
-
-      <div class="btns log-in flex-center pointer" ng-click="toggleLogIn()" ng-if="!local.user">
-        <i class="fas fa-sign-in-alt"></i>
-        <span class="text-center text-muted">Iniciar</span>
-      </div>
-
-      <div class="btns help flex-center pointer opacity-half">
-        <i class="fa fa-info-circle text-muted"></i>
-        <span class="text-center text-muted">Ayuda</span>
-      </div>
-
-      <div class="divisor"></div>
-
-      <div class="btns owned flex-center">
-        <i class="fas fa-check-square"></i>
-        <span class="text-center stat">{{getOwnedCount()}}</span>
-        <span class="text-center text-muted">Marcadas</span>
-      </div>
-      <div class="btns missing flex-center">
-        <i class="far fa-square"></i>
-        <span class="text-center stat">{{getMissingCount()}}</span>
-        <span class="text-center text-muted">Faltantes</span>
-      </div>
-      <div class="btns duplicates flex-center">
-        <i class="far fa-clone"></i>
-        <span class="text-center stat">{{getDuplicateCount()}}</span>
-        <span class="text-center text-muted">Repetidas</span>
-      </div>
-
-      <div class="divisor"></div>
-
-      <div class="btns share flex-center pointer opacity-half">
-        <i class="fas fa-share-alt"></i>
-        <span class="text-center text-muted">Compartir</span>
-      </div>
-
-      <div class="btns filter flex-center pointer" ng-click="toggleFilter()">
-        <i class="fa fa-filter"></i>
-        <span class="text-center text-muted">Filtros</span>
-      </div>
-
-      <div class="filter-box btns" ng-if="tFilter">
-        <div class="close pointer" ng-click="toggleFilter()">
-          <i class="far fa-window-close"></i>
-        </div>
-        <div class="owned pointer" ng-click="cardFilter('owned')" ng-class="{'opacity-1': filters.owned}">
-          <i class="fas fa-check-square"></i>
-          <span class="margin-left-10">Marcadas</span>
-        </div>
-        <div class="missing pointer" ng-click="cardFilter('missing')" ng-class="{'opacity-1': filters.missing}">
-          <i class="fas fa-square"></i>
-          <span class="margin-left-10">Faltantes</span>
-        </div>
-        <div class="duplicates pointer" ng-click="cardFilter('duplicates')" ng-class="{'opacity-1': filters.duplicates}">
-          <i class="fas fa-clone"></i>
-          <span class="margin-left-10">Repetidas</span>
-        </div>
-
-      </div>
-
-      <div class="save-btn flex-center pointer" ng-class="{'save-btn': !tActive ,'btns': tActive}" style="color: var(--fifa-sblue);">
-        <i class="fas fa-save"
-          ng-click="saveCards()"
-          ng-class="{'unsaved': !saved}" >
+      <div class="tools-btn flex-center pointer" ng-class="{'collapse': tActive}">
+        <i class="fas fa-circle" ng-if="!tActive"></i>
+        <i class="fas fa-chevron-down" ng-if="tActive" ng-click="toggleTools()"></i>
+        <i class="fas fa-ellipsis-h"
+          ng-if="!tActive"
+          ng-click="toggleTools()"
+          ng-class="{'active': !tActive}" >
         </i>
-        <span class="text-center text-muted" ng-if="tActive">Guardar</span>
+      </div>
+
+      <div class="houdini-btns flex-center" ng-class="{'padding-right-50': !tActive, 'expanded': tActive}">
+
+        <div class="btns user flex-center text-center pointer" ng-click="toggleUser()" ng-if="local.user">
+          <i class="far fa-user-circle"></i>
+          <span class="text-center text-muted">Usuario</span>
+        </div>
+
+        <div class="user-box" ng-if="showUserBox && tActive">
+
+          <div class="close pointer" ng-click="toggleUser()">
+            <i class="far fa-window-close"></i>
+          </div>
+
+          <h6 ng-if="fromSave">Te recomendamos cambiar tu nombre de usuario y establecer un pin para nunca perder tus datos.</h6>
+
+          <div class="name" ng-if="editUser || fromSave || showLogIn" ng-class="{'border-error': loginError == 'card'}">
+            <input id="name" class="input-placeholder" placeholder="" ng-model="user.name">
+            <span class="placeholder-label" ng-class="{'placeholder-label-up': user.name}">Usuario</span>
+          </div>
+
+          <div class="pin" ng-if="editUser || askPin || showLogIn" ng-class="{'border-error': loginError == 'pin'}">
+            <input id="pin" type="password" class="input-placeholder" placeholder="" maxlength="4" ng-model="user.pin">
+            <span class="placeholder-label" ng-class="{'placeholder-label-up': user.pin}">Pin (4 digitos)</span>
+          </div>
+
+          <div class="pin" ng-if="askPin || showRegister " ng-class="{'border-error': user.pin != user.pinConfirm}">
+            <input id="pinConfirm" type="password" class="input-placeholder" placeholder="" maxlength="4" ng-model="user.pinConfirm">
+            <span class="placeholder-label" ng-class="{'placeholder-label-up': user.pinConfirm}">Confirmar</span>
+          </div>
+
+          <h6 ng-if="showLogIn && failedLogIn && showRegister">
+            No encontramos una cuenta con este usuario, ¿Quieres registrarte? <i ng-click="disableRegister()" class="fas fa-times"></i>
+          </h6>
+          <h6 ng-if="showLogIn && !showRegister" ng-click="showRegisterBox()" class="pointer">Registrarme</h6>
+
+          <div class="log-in flex-center btn btn-primary" ng-if="showLogIn && !showRegister" ng-click="logIn()" ng-disabled="!user.name || !user.pin">
+            Iniciar
+            <i class="fas fa-chevron-right margin-left-10"></i>
+          </div>
+
+          <div class="log-in flex-center btn btn-primary" ng-if="showRegister" ng-click="register()" ng-disabled="!user.name || !user.pin">
+            Registrarse
+            <i class="fas fa-user-plus margin-left-10"></i>
+          </div>
+
+          <div class="save-user flex-center btn btn-primary" ng-if="editUser" ng-click="saveUser()" ng-disabled="!user.name || !user.pin">
+            <i class="fas fa-user-check margin-right-10"></i>
+            Cambiar nombre
+          </div>
+
+          <div class="save-user flex-center btn btn-primary" ng-if="askPin" ng-click="saveUserPin()" ng-disabled="!user.pin || user.pin != user.pinConfirm">
+            <i class="fas fa-user-lock margin-right-10"></i>
+            Establecer Pin
+          </div>
+
+          <span class="forgot pointer opacity-half text-muted" ng-if="false && ( editUser || failedLogIn )">
+            ¿No recuerdas tu pin?
+          </span>
+
+          <div class="user-info" ng-if="!editUser && !askPin && !showLogIn">
+            <i class="fas fa-user"></i>
+            <span class="username pointer" ng-click="toggleEditUser()">{{user.name}}</span>
+            <br>
+            <i class="fas fa-cog user-options margin-right-10" ng-click="toggleEditUser()"></i>
+            <!-- Pendiente de editar pin -->
+            <!-- <i class="fas fa-lock user-options" ng-click="toggleEditPin()"></i> -->
+            <i class="fas fa-sign-out-alt text-warning user-options" ng-click="logOut()"></i>
+          </div>
+
+        </div>
+
+        <div class="btns log-in flex-center pointer" ng-click="toggleLogIn()" ng-if="!local.user">
+          <i class="fas fa-sign-in-alt"></i>
+          <span class="text-center text-muted">Iniciar</span>
+        </div>
+
+        <div class="btns help flex-center pointer opacity-half" ng-if="false">
+          <i class="fa fa-info-circle text-muted"></i>
+          <span class="text-center text-muted">Ayuda</span>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="btns owned flex-center"
+             ng-click="cardFilter('owned')"
+             ng-class="{'opacity-1': filters.owned && fActive(),
+              'opacity-half': !filters.owned && fActive() }">
+          <i class="fas fa-check-square"></i>
+          <span class="text-center stat">{{getOwnedCount()}}</span>
+          <span class="text-center text-muted">Marcadas</span>
+        </div>
+
+        <div class="btns missing flex-center"
+             ng-click="cardFilter('missing')"
+             ng-class="{'opacity-1': filters.missing && fActive(),
+              'opacity-half': !filters.missing && fActive() }">
+          <i class="far fa-square"></i>
+          <span class="text-center stat">{{getMissingCount()}}</span>
+          <span class="text-center text-muted">Faltantes</span>
+        </div>
+
+        <div class="btns duplicates flex-center"
+             ng-click="cardFilter('duplicates')"
+             ng-class="{'opacity-1': filters.duplicates && fActive(),
+              'opacity-half': !filters.duplicates && fActive() }">
+          <i class="far fa-clone"></i>
+          <span class="text-center stat">{{getDuplicateCount()}}</span>
+          <span class="text-center text-muted">Repetidas</span>
+        </div>
+
+        <div class="divisor"></div>
+
+        <div class="btns share flex-center pointer opacity-half" ng-if="false">
+          <i class="fas fa-share-alt"></i>
+          <span class="text-center text-muted">Compartir</span>
+        </div>
+
+        <div class="btns filter flex-center pointer" ng-click="toggleFilter()" ng-if="false">
+          <i class="fa fa-filter"></i>
+          <span class="text-center text-muted">Filtros</span>
+        </div>
+
+        <div class="filter-box btns" ng-if="tFilter">
+          <div class="close pointer" ng-click="toggleFilter()">
+            <i class="far fa-window-close"></i>
+          </div>
+          <div class="owned pointer" ng-click="cardFilter('owned')" ng-class="{'opacity-1': filters.owned}">
+            <i class="fas fa-check-square"></i>
+            <span class="margin-left-10">Marcadas</span>
+          </div>
+          <div class="missing pointer" ng-click="cardFilter('missing')" ng-class="{'opacity-1': filters.missing}">
+            <i class="fas fa-square"></i>
+            <span class="margin-left-10">Faltantes</span>
+          </div>
+          <div class="duplicates pointer" ng-click="cardFilter('duplicates')" ng-class="{'opacity-1': filters.duplicates}">
+            <i class="fas fa-clone"></i>
+            <span class="margin-left-10">Repetidas</span>
+          </div>
+
+        </div>
+
+        <div class="save-btn flex-center pointer" ng-class="{'save-btn': !tActive ,'btns': tActive}" style="color: var(--fifa-sblue);">
+          <i class="fas fa-save"
+            ng-click="saveCards()"
+            ng-class="{'unsaved': !saved}" >
+          </i>
+          <span class="text-center text-muted" ng-if="tActive">Guardar</span>
+        </div>
+
       </div>
 
     </div>
 
   </div>
+
+  <script>
+    if(false && 'serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('sw.js')
+        .then(function() { console.log("Service Worker Registered"); });
+    }
+  </script>
+
+  <!-- jQuery -->
+  <script src="assets/jquery-3.3.1.slim.min.js"></script>
+
+  <!-- ANGULAR -->
+  <script src="assets/angular.min.js"></script>
+  <script src="assets/angular-route.min.js"></script>
+  <script src="assets/angular-animate.min.js"></script>
+
+  <!-- Sweeeeet Alerts -->
+  <script src="assets/sweetalert2.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="assets/bootstrap.min.js"></script>
+
+  <script src="app.js"></script>
 
 </body>
 </html>
