@@ -237,6 +237,7 @@
 
       .card:hover .duplicates-toggler {
         display: block;
+        transition: display: 1.5s;
       }
 
       .duplicates .number {

@@ -1,6 +1,8 @@
 # Coleccionista webApp
 #### Para álbum 'Copa del Mundo Panini 2018' ®
 
+### **v0.8** [Album collector](https://softwarenacho.github.io/collector/)
+
 ###### AngularJS con el objetivo de convertirse en una aplicación progresiva, probada y funcionada en Web, iOS y Android.
 
 Usando una estructura similar a la estructura del álbum físico con clasificación por página, grupo y equipo, con interfaces orientadas a la usabilidad, usando la paleta de colores oficiales, y el mínimo de elementos visibles a la vez manteniendo la aplicación en una página
@@ -58,6 +60,7 @@ Usando una estructura similar a la estructura del álbum físico con clasificaci
 - Comparar cambios entre la versión en línea y la local
 - Cambiar pin (botón deshabilitado)
 - Modo inverso para las faltantes
+- Spinners en cargas
 
 
 ### Bugs:
