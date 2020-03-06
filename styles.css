@@ -3,11 +3,11 @@
   :root {
       --fifa-red: #D30208;
       --fifa-gold: #E5C685;
-      --fifa-gold-t: #E5C68540;
+      --fifa-gold-t: #775000;
       --fifa-white: #F5EED5;
       --fifa-black: #171714;
       --fifa-sblue: #015386;
-      --fifa-lblue: #0074B1;
+      --fifa-lblue: #195385;
       --roboto: 'Roboto';
       --frederika: 'Fredericka the Great';
   }
@@ -79,22 +79,9 @@
     color: var(--fifa-white);
   }
 
-  .thin {
-    var(--fifa-lblue);
-    font-weight: 100;
-  }
-
   .border-error {
     border-bottom: 2.5px dotted var(--fifa-red);
     color: var(--fifa-red);
-  }
-
-  .divisor {
-    width: 2.5px;
-    margin: 0px 5px !important;
-    background-color: var(--fifa-gold-t);
-    height: 100%;
-    margin: 0 2.5px !important;
   }
 
   .pointer {
@@ -221,12 +208,8 @@
         justify-content: flex-start;
         padding: 5px;
         margin: 0px 2.5px;
-        min-width: 50px;
-        width: 50px;
-        max-width: 50px;
-        max-height: 75px;
         border-right: 0.5px solid #e5c68540;
-        border-bottom: 0.5px solid var(--fifa-gold-t);
+        border-bottom: 0.5px solid #e5c68540;
       }
 
       .card .info .owned {color: var(--fifa-sblue);}
@@ -237,10 +220,14 @@
         display: none;
         color: var(--fifa-lblue);
         position: absolute;
-        bottom: 0;
-        right: 0;
+        bottom: 2.5px;
+        right: 5px;
         margin: 2.5px;
         font-size: 10px;
+      }
+
+      .card.owned:hover {
+        padding-bottom: 15px;
       }
 
       .card:hover .duplicates-toggler {

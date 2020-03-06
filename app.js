@@ -1,3 +1,4 @@
+
 const collectorApp = angular.module('collectorApp', []);
 
 collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , function CardsController($scope, $timeout, $http) {
@@ -64,7 +65,8 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
   }
 
   let enviroment = window.location.href;
-  let urlBase = enviroment.includes('softwarenacho') ? 'https://nacho-api.herokuapp.com/api/' : 'http://localhost:3000/api/';
+  // let urlBase = enviroment.includes('softwarenacho') ? 'https://nacho-api.herokuapp.com/api/' : 'http://localhost:3000/api/';
+  let urlBase = 'https://nacho-api.herokuapp.com/api/';
   $scope.local = localStorage;
 
   if (localStorage.cards && localStorage.cards.length > 0) $scope.localCards = JSON.parse(localStorage.cards);
@@ -580,3 +582,4 @@ collectorApp.directive('dblClickMobile', function () {
     }
   };
 });
+
