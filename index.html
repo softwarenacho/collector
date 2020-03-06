@@ -45,7 +45,7 @@
       </h3>
     </div>
 
-    <div class="cards-groups">
+    <div class="cards-groups" aria-hidden="{{showUserBox && tActive}}">
       <div class="cards-group margin-bottom-10"
            ng-repeat="group in (fGroups || groups)"
            ng-if="showGroup(group.cards)"
@@ -75,13 +75,25 @@
               ng-class="{'owned': card.owned}"
             >
               <i class="far fa-check-square flex-center"
-                 ng-if="card.owned"
-                 ng-click="$evalAsync(toggleCard(card))">
+                ng-if="card.owned"
+                ng-click="$evalAsync(toggleCard(card))"
+                ng-keydown="$event.keyCode == 13 ? $evalAsync(toggleCard(card)) : null"
+                tabindex="{{(showUserBox && tActive) ? '-1' : card.id}}"
+                role="button"
+                aria-label="Card {{card.id}}"
+                aria-valuenow="{{card.owned}}"
+              >
               </i>
               <i class="far fa-square flex-center"
-                 ng-if="!card.owned"
-                 ng-class="{ 'checked': animatedCard == card.id }"
-                 ng-click="$evalAsync(toggleCard(card))">
+                ng-if="!card.owned"
+                ng-class="{ 'checked': animatedCard == card.id }"
+                ng-click="$evalAsync(toggleCard(card))"
+                ng-keydown="$event.keyCode == 13 ? $evalAsync(toggleCard(card)) : null"
+                tabindex="{{(showUserBox && tActive) ? '-1' : card.id}}"
+                role="button"
+                aria-label="Card {{card.id}}"
+                aria-valuenow="{{card.owned}}"
+              >
               </i>
               <div class="info flex-center">
                 <span class="number" ng-class="{'owned': card.owned}">
@@ -141,9 +153,14 @@
           <span class="text-center text-muted">Usuario</span>
         </div>
 
-        <div class="user-box" ng-if="showUserBox && tActive">
+        <div class="user-box" ng-if="showUserBox && tActive"ng-keydown="$event.keyCode == 27 ? toggleUser() : null" >
 
-          <div class="close pointer" ng-click="toggleUser()">
+          <div
+            class="close pointer"
+            tabindex="0"
+            ng-click="toggleUser()"
+            ng-keydown="$event.keyCode == 13 ? toggleUser() : null"
+          >
             <i class="far fa-window-close"></i>
           </div>
 
@@ -167,9 +184,10 @@
           <h6 ng-if="showLogIn && failedLogIn && showRegister">
             No encontramos una cuenta con este usuario, ¿Quieres registrarte? <i ng-click="disableRegister()" class="fas fa-times"></i>
           </h6>
-          <h6 ng-if="showLogIn && !showRegister" ng-click="showRegisterBox()" class="pointer">Registrarme</h6>
 
-          <div class="log-in flex-center btn btn-primary" ng-if="showLogIn && !showRegister" ng-click="logIn()" ng-disabled="!user.name || !user.pin">
+          <h6 ng-if="showLogIn && !showRegister" tabindex="0" ng-click="showRegisterBox()" ng-keydown="$event.keyCode == 13 ? showRegisterBox() : null" class="pointer">Registrarme</h6>
+
+          <div class="log-in flex-center btn btn-primary" ng-if="showLogIn && !showRegister" ng-click="logIn()" ng-disabled="!user.name || !user.pin" tabindex="0" ng-keydown="$event.keyCode == 13 ? logIn() : null">
             Iniciar
             <i class="fas fa-chevron-right margin-left-10"></i>
           </div>
