@@ -7,12 +7,10 @@
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <meta name='author' content='Nacho Betancourt'>
   <meta name='version' content='v0.8'>
-  <meta name='description' content='Aplicación de coleccionista para álbum \'Copa del Mundo Panini 2018\' ®'>
+  <meta name='description' content='Aplicación de coleccionista para álbum "Copa del Mundo Panini 2018" ®'>
   <link rel='icon' href='favicon.ico'>
   <link rel='manifest' href='manifest.json'>
   <title>Coleccionista</title>
-
-  <link rel='stylesheet' href='src/main.css'>
 
   <noscript id='deferred-styles'>
     <link rel='stylesheet' type='text/css' href='src/main.css'/>
@@ -21,6 +19,7 @@
     var loadDeferredStyles = function() {
       var addStylesNode = document.getElementById("deferred-styles");
       var replacement = document.createElement("div");
+      replacement.setAttribute('aria-label', 'Estilos');
       replacement.innerHTML = addStylesNode.textContent;
       document.body.appendChild(replacement)
       addStylesNode.parentElement.removeChild(addStylesNode);
@@ -33,46 +32,58 @@
 
 </head>
 
-<body ng-app='collectorApp' ng-controller='CardsController' ng-init='init()'>
+<body>
 
-  <div class="container-fluid flex-center">
+  <div
+    class="container-fluid flex-center"
+    aria-label="Contenido"
+    aria-role="application"
+    ng-app='collectorApp'
+    ng-controller='CardsController'
+    ng-init='init()'
+  >
 
-    <div class="jumbotron margin-bottom-10">
+    <header class="jumbotron margin-bottom-10" aria-label="Titulo" aria-role="banner">
       <h3 class="text-center text-bold">
         Coleccionista
         <span class="whisper"> webApp</span>
         <h5 class="text-center text-small">Para álbum 'Copa del Mundo Panini 2018' ®</h5>
       </h3>
-    </div>
+    </header>
 
-    <div class="cards-groups" aria-hidden="{{showUserBox && tActive}}">
-      <div class="cards-group margin-bottom-10"
-           ng-repeat="group in (fGroups || groups)"
-           ng-if="showGroup(group.cards)"
-           id="group-{{group.name}}">
+    <main class="cards-groups" aria-label="Album" aria-hidden="{{showUserBox && tActive}}">
+      <section class="cards-group margin-bottom-10"
+        ng-repeat="group in (fGroups || groups)"
+        ng-if="showGroup(group.cards)"
+        id="group-{{group.name}}"
+        aria-label="Página {{group.name}}"
+        aria-role="region"
+      >
 
-        <div class="group-head text-center" ng-dblclick="showAllDups(group)">
-          <span class="group" ng-if="group.group">
-            <i class="fas fa-futbol"></i>
+        <div class="group-head text-center" ng-dblclick="showAllDups(group)" aria-label="Título de página {{group.name}}" aria-role="heading">
+          <figure class="group" ng-if="group.group" aria-label="Grupo {{group.group}}">
+            <i class="fas fa-futbol" aria-label="Balón"></i>
             <b class="letter">{{group.group}}</b>
-          </span>
-          <span class="group" ng-if="!group.group">
-            <i class="fas fa-trophy"></i>
-          </span>
-          <span class="name">{{group.name}}</span>
-          <span class="page">
+          </figure>
+          <figure class="group" ng-if="!group.group" aria-label="Sin grupo">
+            <i class="fas fa-trophy" aria-label="Trofeo"></i>
+          </figure>
+          <span class="name" aria-label="Nombre del grupo">{{group.name}}</span>
+          <figure class="page" aria-label="Número de página" aria-label="Página {{group.page}}">
             {{group.page}}
-            <i class="fas fa-file"></i>
-          </span>
+            <i class="fas fa-file" aria-label="Página"></i>
+          </figure>
         </div>
 
-        <div class="group-body flex-center">
-          <div class="cards">
-            <div class="card flex-center"
+        <div class="group-body flex-center" aria-label="Cartas de página {{group.name}}">
+          <div class="cards" aria-label="Cartas de página {{group.name}}" aria-role="list">
+            <article
+              class="card flex-center"
               id="card-{{card.id}}"
               ng-repeat="card in group.cards"
               ng-if="showCard(card)"
               ng-class="{'owned': card.owned}"
+              aria-label="Carta {{card.id}}"
             >
               <i class="far fa-check-square flex-center"
                 ng-if="card.owned"
@@ -80,8 +91,10 @@
                 ng-keydown="$event.keyCode == 13 ? $evalAsync(toggleCard(card)) : null"
                 tabindex="{{(showUserBox && tActive) ? '-1' : card.id}}"
                 role="button"
-                aria-label="Card {{card.id}}"
+                aria-label="Carta {{card.id}}"
                 aria-valuenow="{{card.owned}}"
+                aria-live="polite"
+                aria-role="button"
               >
               </i>
               <i class="far fa-square flex-center"
@@ -91,48 +104,55 @@
                 ng-keydown="$event.keyCode == 13 ? $evalAsync(toggleCard(card)) : null"
                 tabindex="{{(showUserBox && tActive) ? '-1' : card.id}}"
                 role="button"
-                aria-label="Card {{card.id}}"
+                aria-label="Carta {{card.id}}"
                 aria-valuenow="{{card.owned}}"
+                aria-live="polite"
+                aria-role="button"
               >
               </i>
-              <div class="info flex-center">
+              <div class="info flex-center" aria-label="Carta {{card.id}}" aria-valuenow="{{card.owned}}">
                 <span class="number" ng-class="{'owned': card.owned}">
                   {{card.id}}
                 </span>
               </div>
-
               <i class="fas fa-copy duplicates-toggler"
-                 ng-click="showDups(card)"
-                 ng-if="card.owned && !card.active">
+                ng-click="showDups(card)"
+                ng-if="card.owned && !card.active"
+                aria-label="Agregar duplicados de carta {{card.id}}"
+                aria-valuenow="{{card.duplicates}}"
+                aria-role="button"
+              >
                 <span ng-if="card.duplicates > 0">
                   {{card.duplicates}}
                 </span>
-             </i>
+              </i>
               <i class="fas fa-chevron-up duplicates-toggler margin-0"
                  ng-click="showDups(card)"
                  ng-class="{'active': card.active}"
-                 ng-if="card.owned && card.active"></i>
-
-              <div class="duplicates flex-center" ng-if="card.active">
-                <i class="far fa-minus-square" ng-click='gaveDuplicate(card)'></i>
+                 ng-if="card.owned && card.active"
+                 aria-label="Cerrar duplicados de carta {{card.id}}"
+                 aria-role="button"
+              ></i>
+              <div class="duplicates flex-center" ng-if="card.active" aria-label="Agregar o quitar duplicados de carta {{card.id}}">
+                <i class="far fa-minus-square" ng-click='gaveDuplicate(card)' aria-role="button" aria-label="Quitar duplicado carta {{card.id}}"></i>
                 <span class="number flex-center"
-                 ng-click="showDups(card)">
+                 ng-click="showDups(card)" aria-label="Total duplicados carta {{card.id}}" aria-live="polite">
                   {{card.duplicates}}
                 </span>
-                <i class="far fa-plus-square text-success" ng-click='gotDuplicate(card)'></i>
+                <i class="far fa-plus-square text-success" ng-click='gotDuplicate(card)' aria-role="button" aria-label="Agregar duplicado carta {{card.id}}"></i>
               </div>
-            </div>
+            </article>
           </div>
         </div>
 
-      </div>
-    </div>
+      </section>
+    </main>
 
-    <div class="footer margin-bottom-5 flex-center text-muted" style="align-items: baseline; width:100%;">
+    <footer class="footer margin-bottom-5 flex-center text-muted" style="align-items: baseline; width:100%;">
       <span>
         <i class="fas fa-code margin-15" style="color: var(--fifa-black)"></i> Nacho Betancourt, 2018
       </span>
-    </div>
+    </footer>
 
     <div class="toolbar-container" ng-class="{'active': tActive}" >
 

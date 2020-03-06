@@ -19,6 +19,10 @@
     position: relative;
   }
 
+  figure {
+    margin: 0 !important;
+  }
+
   .container-fluid {
     position: relative;
     padding: 0px;
@@ -230,7 +234,7 @@
         padding-bottom: 15px;
       }
 
-      .card:hover .duplicates-toggler {
+      .card:hover .duplicates-toggler, .card i:focus + .duplicates-toggler {
         display: block;
         transition: display: 1.5s;
       }
