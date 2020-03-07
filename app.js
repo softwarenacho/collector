@@ -10,6 +10,9 @@ collectorApp.controller('CardsController', ['$scope', '$timeout', '$http' , func
       this.owned = false;
       this.active;
       this.duplicates = 0;
+      // hide loading
+      let loading = angular.element( document.querySelector('#loading') );
+      loading.remove();
     }
 
     toggleCard() {

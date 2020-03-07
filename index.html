@@ -41,6 +41,7 @@
     ng-app='collectorApp'
     ng-controller='CardsController'
     ng-init='init()'
+    ng-cloak
   >
 
     <header class="jumbotron margin-bottom-10" aria-label="Titulo" aria-role="banner">
@@ -322,6 +323,25 @@
     </div>
 
   </div>
+
+  <div id="loading">
+    Cargando página...
+  </div>
+
+  <style type="text/css">
+    #loading {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #F5EED5;
+      font-size: 300%;
+      color: #015386;
+    }
+  </style>
 
   <script>
     if(false && 'serviceWorker' in navigator) {
